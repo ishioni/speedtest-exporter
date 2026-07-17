@@ -1,0 +1,13 @@
+[pre-commit]
+parallel = true
+
+[pre-commit.commands.gofmt]
+glob = "**/*.go"
+run = "gofmt -w {staged_files} && git add {staged_files}"
+
+[pre-commit.commands.helm-generated-files]
+glob = "charts/speedtest-exporter/{Chart.yaml,values.yaml,README.md.gotmpl}"
+run = "mise run generate && git add charts/speedtest-exporter/README.md charts/speedtest-exporter/values.schema.json"
+
+[pre-push.commands.test]
+run = "mise run test"

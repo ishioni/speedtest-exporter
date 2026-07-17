@@ -1,0 +1,66 @@
+suite: dashboard
+release:
+  name: speedtest-exporter
+  namespace: speedtest-system
+templates:
+  - templates/dashboard.yaml
+  - templates/grafanadashboard.yaml
+tests:
+  - it: does not create dashboard objects by default
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: creates a Grafana sidecar ConfigMap when enabled
+    set:
+      monitoring.dashboards.enabled: true
+    template: templates/dashboard.yaml
+    asserts:
+      - isKind:
+          of: ConfigMap
+      - equal:
+          path: metadata.name
+          value: speedtest-exporter-dashboard
+      - equal:
+          path: metadata.labels.grafana_dashboard
+          value: "1"
+      - exists:
+          path: data["speedtest-exporter.json"]
+
+  - it: creates a GrafanaDashboard CR for grafana-operator
+    set:
+      monitoring.dashboards.enabled: true
+      monitoring.dashboards.grafanaOperator.enabled: true
+      monitoring.dashboards.grafanaOperator.matchLabels:
+        dashboards: grafana
+    template: templates/grafanadashboard.yaml
+    asserts:
+      - isKind:
+          of: GrafanaDashboard
+      - equal:
+          path: spec.instanceSelector.matchLabels.dashboards
+          value: grafana
+      - equal:
+          path: spec.configMapRef.key
+          value: speedtest-exporter.json
+
+  - it: removes the sidecar label when grafana-operator imports the ConfigMap
+    set:
+      monitoring.dashboards.enabled: true
+      monitoring.dashboards.grafanaOperator.enabled: true
+      monitoring.dashboards.grafanaOperator.matchLabels:
+        dashboards: grafana
+    template: templates/dashboard.yaml
+    asserts:
+      - notExists:
+          path: metadata.labels.grafana_dashboard
+
+  - it: honors the dashboard namespace
+    set:
+      monitoring.dashboards.enabled: true
+      monitoring.dashboards.namespace: monitoring
+    template: templates/dashboard.yaml
+    asserts:
+      - equal:
+          path: metadata.namespace
+          value: monitoring

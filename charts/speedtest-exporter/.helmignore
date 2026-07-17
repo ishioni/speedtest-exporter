@@ -1,0 +1,8 @@
+.DS_Store
+.git/
+.github/
+.mise/
+*.tgz
+README.md.gotmpl
+values.schema.json
+tests/

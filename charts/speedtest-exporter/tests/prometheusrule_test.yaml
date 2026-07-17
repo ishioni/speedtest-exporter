@@ -1,0 +1,49 @@
+suite: PrometheusRule
+templates:
+  - templates/prometheusrule.yaml
+tests:
+  - it: creates availability and connection-quality alerts using the exporter metric names and units
+    release:
+      name: speedtest-exporter
+      namespace: monitoring
+    set:
+      monitoring.prometheusRule.enabled: true
+    asserts:
+      - isKind:
+          of: PrometheusRule
+      - lengthEqual:
+          path: spec.groups[0].rules
+          count: 5
+      - equal:
+          path: spec.groups[0].rules[0].alert
+          value: SpeedtestExporterAbsent
+      - equal:
+          path: spec.groups[0].rules[0].expr
+          value: absent(up{job="speedtest-exporter"} == 1)
+      - equal:
+          path: spec.groups[0].rules[0].for
+          value: 75m
+      - equal:
+          path: spec.groups[0].rules[1].expr
+          value: avg_over_time(speedtest_download_bits_per_second{job="speedtest-exporter"}[4h]) / 1000000 < 400
+      - equal:
+          path: spec.groups[0].rules[2].expr
+          value: avg_over_time(speedtest_upload_bits_per_second{job="speedtest-exporter"}[4h]) / 1000000 < 400
+      - equal:
+          path: spec.groups[0].rules[3].expr
+          value: avg_over_time(speedtest_ping_latency_milliseconds{job="speedtest-exporter"}[4h]) > 15
+      - equal:
+          path: spec.groups[0].rules[4].expr
+          value: avg_over_time(speedtest_jitter_latency_milliseconds{job="speedtest-exporter"}[4h]) > 30
+  - it: allows individual performance alerts to be disabled
+    set:
+      monitoring.prometheusRule.enabled: true
+      monitoring.prometheusRule.alerts.slowDownload.enabled: false
+    asserts:
+      - lengthEqual:
+          path: spec.groups[0].rules
+          count: 4
+      - notContains:
+          path: spec.groups[0].rules
+          content:
+            alert: SpeedtestSlowInternetDownload

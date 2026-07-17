@@ -1,0 +1,18 @@
+apiVersion: v2
+name: speedtest-exporter
+description: Prometheus exporter backed by the official Ookla Speedtest CLI
+type: application
+kubeVersion: ">=1.25.0-0"
+version: 0.0.0
+appVersion: "0.0.0"
+home: https://github.com/ishioni/speedtest-exporter
+icon: https://www.speedtest.net/favicon.ico
+sources:
+  - https://github.com/ishioni/speedtest-exporter
+keywords:
+  - prometheus
+  - exporter
+  - speedtest
+  - ookla
+annotations:
+  category: Monitoring

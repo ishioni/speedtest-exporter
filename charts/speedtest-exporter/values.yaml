@@ -1,0 +1,232 @@
+# Default values for speedtest-exporter.
+# A Speedtest run consumes real network bandwidth. Set cacheFor to at least your
+# Prometheus scrape interval so concurrent scrapes do not repeatedly run a test.
+
+# -- Number of exporter Pods. Each replica independently performs Speedtests.
+replicaCount: 1
+
+image:
+  # -- Image repository.
+  repository: ghcr.io/ishioni/speedtest-exporter
+  # -- Image pull policy.
+  pullPolicy: IfNotPresent
+  # -- Image tag; defaults to the chart appVersion.
+  tag: ""
+  # -- Image digest (sha256:…); when set, it overrides tag.
+  digest: ""
+
+# -- Image pull secrets for private registries.
+imagePullSecrets: []
+# -- Override the chart name used in resource names.
+nameOverride: ""
+# -- Override the full release name.
+fullnameOverride: ""
+
+config:
+  # -- Optional Ookla server ID passed to `speedtest --server-id`.
+  serverID: ""
+  # -- Maximum duration for a CLI run. Supports Go durations or legacy whole seconds.
+  timeout: 90s
+  # -- How long to reuse the latest completed result. `0` runs a test on every scrape.
+  cacheFor: 5m
+  # -- Log level: debug, info, warn, or error.
+  logLevel: info
+  # -- Log format: json or text.
+  logFormat: json
+  # -- Extra environment variables merged into the exporter container.
+  extraEnv: []
+
+serviceAccount:
+  # -- Create a ServiceAccount. The exporter does not need a Kubernetes API token.
+  create: true
+  # -- Automount the ServiceAccount token.
+  automount: false
+  # -- ServiceAccount annotations.
+  annotations: {}
+  # -- ServiceAccount name; generated if empty.
+  name: ""
+
+service:
+  # -- Service type.
+  type: ClusterIP
+  # -- Prometheus and health endpoint port.
+  port: 9798
+  # -- Service annotations.
+  annotations: {}
+
+# -- Deployment annotations.
+deploymentAnnotations: {}
+# -- Pod annotations.
+podAnnotations: {}
+# -- Pod labels.
+podLabels: {}
+
+# -- Runs the distroless non-root image with the RuntimeDefault seccomp profile.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+
+# -- Drops all Linux capabilities and keeps the image filesystem read-only.
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+# -- Resource requests and limits. Speed tests are network and CPU intensive.
+resources:
+  requests:
+    cpu: 100m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
+
+# -- Liveness probe; it verifies that the HTTP server is responsive, not WAN connectivity.
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 20
+
+# -- Readiness probe; it is available after startup CLI validation.
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+# -- Optional startup probe. Empty disables it.
+startupProbe: {}
+# -- Grace period used for in-flight HTTP requests on termination.
+terminationGracePeriodSeconds: 30
+
+monitoring:
+  serviceMonitor:
+    # -- Create a Prometheus Operator ServiceMonitor.
+    enabled: false
+    # -- Scrape interval. Keep it no shorter than config.cacheFor to avoid unnecessary tests.
+    interval: 5m
+    # -- Must exceed config.timeout plus CLI startup overhead.
+    scrapeTimeout: 120s
+    # -- Metrics path.
+    path: /metrics
+    # -- Service label used as Prometheus's stable job label. The default is the Helm release name.
+    jobLabel: app.kubernetes.io/instance
+    # -- ServiceMonitor labels.
+    labels: {}
+    # -- ServiceMonitor annotations.
+    annotations: {}
+    # -- Prometheus metric relabelings.
+    metricRelabelings: []
+    # -- Prometheus relabelings.
+    relabelings: []
+
+  prometheusRule:
+    # -- Create a Prometheus Operator PrometheusRule containing availability and connection-quality alerts.
+    enabled: false
+    # -- Labels added to the PrometheusRule. Set labels required by your PrometheusRule selector here.
+    labels: {}
+    # -- Annotations added to the PrometheusRule.
+    annotations: {}
+    # -- Alert group name.
+    groupName: speedtest-exporter
+    alerts:
+      exporterAbsent:
+        # -- Alert when the exporter is absent or has no healthy scrape target.
+        enabled: true
+        # -- Time the exporter must be unavailable before alerting.
+        for: 75m
+        # -- Severity for the exporter-absent alert.
+        severity: critical
+      slowDownload:
+        # -- Alert when average download speed is below the configured Mbps threshold.
+        enabled: true
+        # -- Lookback window used for the average.
+        window: 4h
+        # -- Download threshold in Mbps.
+        threshold: 400
+        # -- Time the average must remain below threshold before alerting.
+        for: 0m
+        # -- Severity for the slow-download alert.
+        severity: warning
+      slowUpload:
+        # -- Alert when average upload speed is below the configured Mbps threshold.
+        enabled: true
+        # -- Lookback window used for the average.
+        window: 4h
+        # -- Upload threshold in Mbps.
+        threshold: 400
+        # -- Time the average must remain below threshold before alerting.
+        for: 0m
+        # -- Severity for the slow-upload alert.
+        severity: warning
+      highPingLatency:
+        # -- Alert when average ping latency exceeds the configured millisecond threshold.
+        enabled: true
+        # -- Lookback window used for the average.
+        window: 4h
+        # -- Ping threshold in milliseconds.
+        threshold: 15
+        # -- Time the average must remain above threshold before alerting.
+        for: 0m
+        # -- Severity for the high-ping alert.
+        severity: warning
+      highJitterLatency:
+        # -- Alert when average jitter exceeds the configured millisecond threshold.
+        enabled: true
+        # -- Lookback window used for the average.
+        window: 4h
+        # -- Jitter threshold in milliseconds.
+        threshold: 30
+        # -- Time the average must remain above threshold before alerting.
+        for: 0m
+        # -- Severity for the high-jitter alert.
+        severity: warning
+
+  dashboards:
+    # -- Render the Grafana dashboard ConfigMap for the Grafana sidecar or grafana-operator.
+    enabled: false
+    # -- Namespace for dashboard objects; defaults to the release namespace.
+    namespace: ""
+    # -- Annotations added to the dashboard ConfigMap.
+    annotations: {}
+    # -- Labels added to the dashboard ConfigMap. For the Grafana sidecar, add any labels your deployment selects on.
+    labels: {}
+    grafanaOperator:
+      # -- Render a GrafanaDashboard CR that imports the ConfigMap instead of using the Grafana sidecar label.
+      enabled: false
+      # -- Allow a Grafana instance in a different namespace to import the dashboard.
+      allowCrossNamespaceImport: true
+      # -- Grafana folder for the dashboard.
+      folder: ""
+      # -- How often the Grafana Operator resyncs this dashboard.
+      resyncPeriod: 10m
+      # -- Labels that select the target Grafana instance. Required when grafanaOperator.enabled is true.
+      matchLabels: {}
+
+# -- Optional PodDisruptionBudget configuration.
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+# -- Node selector for the exporter Pod.
+nodeSelector: {}
+# -- Affinity rules for the exporter Pod.
+affinity: {}
+# -- Tolerations for the exporter Pod.
+tolerations: []
+
+# -- Image and pull policy used by `helm test`.
+tests:
+  image:
+    repository: curlimages/curl
+    tag: 8.17.0
+    pullPolicy: IfNotPresent

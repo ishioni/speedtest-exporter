@@ -1,0 +1,809 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "affinity": {
+      "description": "Affinity rules for the exporter Pod.",
+      "required": [],
+      "title": "affinity",
+      "type": "object"
+    },
+    "config": {
+      "properties": {
+        "cacheFor": {
+          "default": "5m",
+          "description": "How long to reuse the latest completed result. `0` runs a test on every scrape.",
+          "title": "cacheFor",
+          "type": "string"
+        },
+        "extraEnv": {
+          "description": "Extra environment variables merged into the exporter container.",
+          "items": {
+            "required": []
+          },
+          "title": "extraEnv",
+          "type": "array"
+        },
+        "logFormat": {
+          "default": "json",
+          "description": "Log format: json or text.",
+          "title": "logFormat",
+          "type": "string"
+        },
+        "logLevel": {
+          "default": "info",
+          "description": "Log level: debug, info, warn, or error.",
+          "title": "logLevel",
+          "type": "string"
+        },
+        "serverID": {
+          "default": "",
+          "description": "Optional Ookla server ID passed to `speedtest --server-id`.",
+          "title": "serverID",
+          "type": "string"
+        },
+        "timeout": {
+          "default": "90s",
+          "description": "Maximum duration for a CLI run. Supports Go durations or legacy whole seconds.",
+          "title": "timeout",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "title": "config",
+      "type": "object"
+    },
+    "deploymentAnnotations": {
+      "description": "Deployment annotations.",
+      "required": [],
+      "title": "deploymentAnnotations",
+      "type": "object"
+    },
+    "fullnameOverride": {
+      "default": "",
+      "description": "Override the full release name.",
+      "title": "fullnameOverride",
+      "type": "string"
+    },
+    "global": {
+      "description": "Global values are values that can be accessed from any chart or subchart by exactly the same name.",
+      "required": [],
+      "title": "global",
+      "type": "object"
+    },
+    "image": {
+      "properties": {
+        "digest": {
+          "default": "",
+          "description": "Image digest (sha256:…); when set, it overrides tag.",
+          "title": "digest",
+          "type": "string"
+        },
+        "pullPolicy": {
+          "default": "IfNotPresent",
+          "description": "Image pull policy.",
+          "title": "pullPolicy",
+          "type": "string"
+        },
+        "repository": {
+          "default": "ghcr.io/ishioni/speedtest-exporter",
+          "description": "Image repository.",
+          "title": "repository",
+          "type": "string"
+        },
+        "tag": {
+          "default": "",
+          "description": "Image tag; defaults to the chart appVersion.",
+          "title": "tag",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "title": "image",
+      "type": "object"
+    },
+    "imagePullSecrets": {
+      "description": "Image pull secrets for private registries.",
+      "items": {
+        "required": []
+      },
+      "title": "imagePullSecrets",
+      "type": "array"
+    },
+    "livenessProbe": {
+      "description": "Liveness probe; it verifies that the HTTP server is responsive, not WAN connectivity.",
+      "properties": {
+        "httpGet": {
+          "properties": {
+            "path": {
+              "default": "/healthz",
+              "title": "path",
+              "type": "string"
+            },
+            "port": {
+              "default": "http",
+              "title": "port",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "httpGet",
+          "type": "object"
+        },
+        "initialDelaySeconds": {
+          "default": 5,
+          "title": "initialDelaySeconds",
+          "type": "integer"
+        },
+        "periodSeconds": {
+          "default": 20,
+          "title": "periodSeconds",
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "title": "livenessProbe",
+      "type": "object"
+    },
+    "monitoring": {
+      "properties": {
+        "dashboards": {
+          "properties": {
+            "annotations": {
+              "description": "Annotations added to the dashboard ConfigMap.",
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "enabled": {
+              "default": false,
+              "description": "Render the Grafana dashboard ConfigMap for the Grafana sidecar or grafana-operator.",
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "grafanaOperator": {
+              "properties": {
+                "allowCrossNamespaceImport": {
+                  "default": true,
+                  "description": "Allow a Grafana instance in a different namespace to import the dashboard.",
+                  "title": "allowCrossNamespaceImport",
+                  "type": "boolean"
+                },
+                "enabled": {
+                  "default": false,
+                  "description": "Render a GrafanaDashboard CR that imports the ConfigMap instead of using the Grafana sidecar label.",
+                  "title": "enabled",
+                  "type": "boolean"
+                },
+                "folder": {
+                  "default": "",
+                  "description": "Grafana folder for the dashboard.",
+                  "title": "folder",
+                  "type": "string"
+                },
+                "matchLabels": {
+                  "description": "Labels that select the target Grafana instance. Required when grafanaOperator.enabled is true.",
+                  "required": [],
+                  "title": "matchLabels",
+                  "type": "object"
+                },
+                "resyncPeriod": {
+                  "default": "10m",
+                  "description": "How often the Grafana Operator resyncs this dashboard.",
+                  "title": "resyncPeriod",
+                  "type": "string"
+                }
+              },
+              "required": [],
+              "title": "grafanaOperator",
+              "type": "object"
+            },
+            "labels": {
+              "description": "Labels added to the dashboard ConfigMap. For the Grafana sidecar, add any labels your deployment selects on.",
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            },
+            "namespace": {
+              "default": "",
+              "description": "Namespace for dashboard objects; defaults to the release namespace.",
+              "title": "namespace",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "dashboards",
+          "type": "object"
+        },
+        "prometheusRule": {
+          "properties": {
+            "alerts": {
+              "properties": {
+                "exporterAbsent": {
+                  "properties": {
+                    "enabled": {
+                      "default": true,
+                      "description": "Alert when the exporter is absent or has no healthy scrape target.",
+                      "title": "enabled",
+                      "type": "boolean"
+                    },
+                    "for": {
+                      "default": "75m",
+                      "description": "Time the exporter must be unavailable before alerting.",
+                      "title": "for",
+                      "type": "string"
+                    },
+                    "severity": {
+                      "default": "critical",
+                      "description": "Severity for the exporter-absent alert.",
+                      "title": "severity",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "title": "exporterAbsent",
+                  "type": "object"
+                },
+                "highJitterLatency": {
+                  "properties": {
+                    "enabled": {
+                      "default": true,
+                      "description": "Alert when average jitter exceeds the configured millisecond threshold.",
+                      "title": "enabled",
+                      "type": "boolean"
+                    },
+                    "for": {
+                      "default": "0m",
+                      "description": "Time the average must remain above threshold before alerting.",
+                      "title": "for",
+                      "type": "string"
+                    },
+                    "severity": {
+                      "default": "warning",
+                      "description": "Severity for the high-jitter alert.",
+                      "title": "severity",
+                      "type": "string"
+                    },
+                    "threshold": {
+                      "default": 30,
+                      "description": "Jitter threshold in milliseconds.",
+                      "title": "threshold",
+                      "type": "integer"
+                    },
+                    "window": {
+                      "default": "4h",
+                      "description": "Lookback window used for the average.",
+                      "title": "window",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "title": "highJitterLatency",
+                  "type": "object"
+                },
+                "highPingLatency": {
+                  "properties": {
+                    "enabled": {
+                      "default": true,
+                      "description": "Alert when average ping latency exceeds the configured millisecond threshold.",
+                      "title": "enabled",
+                      "type": "boolean"
+                    },
+                    "for": {
+                      "default": "0m",
+                      "description": "Time the average must remain above threshold before alerting.",
+                      "title": "for",
+                      "type": "string"
+                    },
+                    "severity": {
+                      "default": "warning",
+                      "description": "Severity for the high-ping alert.",
+                      "title": "severity",
+                      "type": "string"
+                    },
+                    "threshold": {
+                      "default": 15,
+                      "description": "Ping threshold in milliseconds.",
+                      "title": "threshold",
+                      "type": "integer"
+                    },
+                    "window": {
+                      "default": "4h",
+                      "description": "Lookback window used for the average.",
+                      "title": "window",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "title": "highPingLatency",
+                  "type": "object"
+                },
+                "slowDownload": {
+                  "properties": {
+                    "enabled": {
+                      "default": true,
+                      "description": "Alert when average download speed is below the configured Mbps threshold.",
+                      "title": "enabled",
+                      "type": "boolean"
+                    },
+                    "for": {
+                      "default": "0m",
+                      "description": "Time the average must remain below threshold before alerting.",
+                      "title": "for",
+                      "type": "string"
+                    },
+                    "severity": {
+                      "default": "warning",
+                      "description": "Severity for the slow-download alert.",
+                      "title": "severity",
+                      "type": "string"
+                    },
+                    "threshold": {
+                      "default": 400,
+                      "description": "Download threshold in Mbps.",
+                      "title": "threshold",
+                      "type": "integer"
+                    },
+                    "window": {
+                      "default": "4h",
+                      "description": "Lookback window used for the average.",
+                      "title": "window",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "title": "slowDownload",
+                  "type": "object"
+                },
+                "slowUpload": {
+                  "properties": {
+                    "enabled": {
+                      "default": true,
+                      "description": "Alert when average upload speed is below the configured Mbps threshold.",
+                      "title": "enabled",
+                      "type": "boolean"
+                    },
+                    "for": {
+                      "default": "0m",
+                      "description": "Time the average must remain below threshold before alerting.",
+                      "title": "for",
+                      "type": "string"
+                    },
+                    "severity": {
+                      "default": "warning",
+                      "description": "Severity for the slow-upload alert.",
+                      "title": "severity",
+                      "type": "string"
+                    },
+                    "threshold": {
+                      "default": 400,
+                      "description": "Upload threshold in Mbps.",
+                      "title": "threshold",
+                      "type": "integer"
+                    },
+                    "window": {
+                      "default": "4h",
+                      "description": "Lookback window used for the average.",
+                      "title": "window",
+                      "type": "string"
+                    }
+                  },
+                  "required": [],
+                  "title": "slowUpload",
+                  "type": "object"
+                }
+              },
+              "required": [],
+              "title": "alerts",
+              "type": "object"
+            },
+            "annotations": {
+              "description": "Annotations added to the PrometheusRule.",
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "enabled": {
+              "default": false,
+              "description": "Create a Prometheus Operator PrometheusRule containing availability and connection-quality alerts.",
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "groupName": {
+              "default": "speedtest-exporter",
+              "description": "Alert group name.",
+              "title": "groupName",
+              "type": "string"
+            },
+            "labels": {
+              "description": "Labels added to the PrometheusRule. Set labels required by your PrometheusRule selector here.",
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            }
+          },
+          "required": [],
+          "title": "prometheusRule",
+          "type": "object"
+        },
+        "serviceMonitor": {
+          "properties": {
+            "annotations": {
+              "description": "ServiceMonitor annotations.",
+              "required": [],
+              "title": "annotations",
+              "type": "object"
+            },
+            "enabled": {
+              "default": false,
+              "description": "Create a Prometheus Operator ServiceMonitor.",
+              "title": "enabled",
+              "type": "boolean"
+            },
+            "interval": {
+              "default": "5m",
+              "description": "Scrape interval. Keep it no shorter than config.cacheFor to avoid unnecessary tests.",
+              "title": "interval",
+              "type": "string"
+            },
+            "jobLabel": {
+              "default": "app.kubernetes.io/instance",
+              "description": "Service label used as Prometheus's stable job label. The default is the Helm release name.",
+              "title": "jobLabel",
+              "type": "string"
+            },
+            "labels": {
+              "description": "ServiceMonitor labels.",
+              "required": [],
+              "title": "labels",
+              "type": "object"
+            },
+            "metricRelabelings": {
+              "description": "Prometheus metric relabelings.",
+              "items": {
+                "required": []
+              },
+              "title": "metricRelabelings",
+              "type": "array"
+            },
+            "path": {
+              "default": "/metrics",
+              "description": "Metrics path.",
+              "title": "path",
+              "type": "string"
+            },
+            "relabelings": {
+              "description": "Prometheus relabelings.",
+              "items": {
+                "required": []
+              },
+              "title": "relabelings",
+              "type": "array"
+            },
+            "scrapeTimeout": {
+              "default": "120s",
+              "description": "Must exceed config.timeout plus CLI startup overhead.",
+              "title": "scrapeTimeout",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "serviceMonitor",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "monitoring",
+      "type": "object"
+    },
+    "nameOverride": {
+      "default": "",
+      "description": "Override the chart name used in resource names.",
+      "title": "nameOverride",
+      "type": "string"
+    },
+    "nodeSelector": {
+      "description": "Node selector for the exporter Pod.",
+      "required": [],
+      "title": "nodeSelector",
+      "type": "object"
+    },
+    "podAnnotations": {
+      "description": "Pod annotations.",
+      "required": [],
+      "title": "podAnnotations",
+      "type": "object"
+    },
+    "podDisruptionBudget": {
+      "description": "Optional PodDisruptionBudget configuration.",
+      "properties": {
+        "enabled": {
+          "default": false,
+          "title": "enabled",
+          "type": "boolean"
+        },
+        "minAvailable": {
+          "default": 1,
+          "title": "minAvailable",
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "title": "podDisruptionBudget",
+      "type": "object"
+    },
+    "podLabels": {
+      "description": "Pod labels.",
+      "required": [],
+      "title": "podLabels",
+      "type": "object"
+    },
+    "podSecurityContext": {
+      "description": "Runs the distroless non-root image with the RuntimeDefault seccomp profile.",
+      "properties": {
+        "fsGroup": {
+          "default": 65532,
+          "title": "fsGroup",
+          "type": "integer"
+        },
+        "fsGroupChangePolicy": {
+          "default": "OnRootMismatch",
+          "title": "fsGroupChangePolicy",
+          "type": "string"
+        },
+        "runAsGroup": {
+          "default": 65532,
+          "title": "runAsGroup",
+          "type": "integer"
+        },
+        "runAsNonRoot": {
+          "default": true,
+          "title": "runAsNonRoot",
+          "type": "boolean"
+        },
+        "runAsUser": {
+          "default": 65532,
+          "title": "runAsUser",
+          "type": "integer"
+        },
+        "seccompProfile": {
+          "properties": {
+            "type": {
+              "default": "RuntimeDefault",
+              "title": "type",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "seccompProfile",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "podSecurityContext",
+      "type": "object"
+    },
+    "readinessProbe": {
+      "description": "Readiness probe; it is available after startup CLI validation.",
+      "properties": {
+        "httpGet": {
+          "properties": {
+            "path": {
+              "default": "/readyz",
+              "title": "path",
+              "type": "string"
+            },
+            "port": {
+              "default": "http",
+              "title": "port",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "httpGet",
+          "type": "object"
+        },
+        "initialDelaySeconds": {
+          "default": 5,
+          "title": "initialDelaySeconds",
+          "type": "integer"
+        },
+        "periodSeconds": {
+          "default": 10,
+          "title": "periodSeconds",
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "title": "readinessProbe",
+      "type": "object"
+    },
+    "replicaCount": {
+      "default": 1,
+      "description": "Number of exporter Pods. Each replica independently performs Speedtests.",
+      "title": "replicaCount",
+      "type": "integer"
+    },
+    "resources": {
+      "description": "Resource requests and limits. Speed tests are network and CPU intensive.",
+      "properties": {
+        "limits": {
+          "properties": {
+            "memory": {
+              "default": "128Mi",
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "limits",
+          "type": "object"
+        },
+        "requests": {
+          "properties": {
+            "cpu": {
+              "default": "100m",
+              "title": "cpu",
+              "type": "string"
+            },
+            "memory": {
+              "default": "64Mi",
+              "title": "memory",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "requests",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "resources",
+      "type": "object"
+    },
+    "securityContext": {
+      "description": "Drops all Linux capabilities and keeps the image filesystem read-only.",
+      "properties": {
+        "allowPrivilegeEscalation": {
+          "default": false,
+          "title": "allowPrivilegeEscalation",
+          "type": "boolean"
+        },
+        "capabilities": {
+          "properties": {
+            "drop": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  }
+                ],
+                "required": []
+              },
+              "title": "drop",
+              "type": "array"
+            }
+          },
+          "required": [],
+          "title": "capabilities",
+          "type": "object"
+        },
+        "readOnlyRootFilesystem": {
+          "default": true,
+          "title": "readOnlyRootFilesystem",
+          "type": "boolean"
+        }
+      },
+      "required": [],
+      "title": "securityContext",
+      "type": "object"
+    },
+    "service": {
+      "properties": {
+        "annotations": {
+          "description": "Service annotations.",
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "port": {
+          "default": 9798,
+          "description": "Prometheus and health endpoint port.",
+          "title": "port",
+          "type": "integer"
+        },
+        "type": {
+          "default": "ClusterIP",
+          "description": "Service type.",
+          "title": "type",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "title": "service",
+      "type": "object"
+    },
+    "serviceAccount": {
+      "properties": {
+        "annotations": {
+          "description": "ServiceAccount annotations.",
+          "required": [],
+          "title": "annotations",
+          "type": "object"
+        },
+        "automount": {
+          "default": false,
+          "description": "Automount the ServiceAccount token.",
+          "title": "automount",
+          "type": "boolean"
+        },
+        "create": {
+          "default": true,
+          "description": "Create a ServiceAccount. The exporter does not need a Kubernetes API token.",
+          "title": "create",
+          "type": "boolean"
+        },
+        "name": {
+          "default": "",
+          "description": "ServiceAccount name; generated if empty.",
+          "title": "name",
+          "type": "string"
+        }
+      },
+      "required": [],
+      "title": "serviceAccount",
+      "type": "object"
+    },
+    "startupProbe": {
+      "description": "Optional startup probe. Empty disables it.",
+      "required": [],
+      "title": "startupProbe",
+      "type": "object"
+    },
+    "terminationGracePeriodSeconds": {
+      "default": 30,
+      "description": "Grace period used for in-flight HTTP requests on termination.",
+      "title": "terminationGracePeriodSeconds",
+      "type": "integer"
+    },
+    "tests": {
+      "description": "Image and pull policy used by `helm test`.",
+      "properties": {
+        "image": {
+          "properties": {
+            "pullPolicy": {
+              "default": "IfNotPresent",
+              "title": "pullPolicy",
+              "type": "string"
+            },
+            "repository": {
+              "default": "curlimages/curl",
+              "title": "repository",
+              "type": "string"
+            },
+            "tag": {
+              "default": "8.17.0",
+              "title": "tag",
+              "type": "string"
+            }
+          },
+          "required": [],
+          "title": "image",
+          "type": "object"
+        }
+      },
+      "required": [],
+      "title": "tests",
+      "type": "object"
+    },
+    "tolerations": {
+      "description": "Tolerations for the exporter Pod.",
+      "items": {
+        "required": []
+      },
+      "title": "tolerations",
+      "type": "array"
+    }
+  },
+  "required": [],
+  "type": "object"
+}

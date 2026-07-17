@@ -1,0 +1,24 @@
+suite: deployment
+release:
+  name: speedtest-exporter
+  namespace: monitoring
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: uses a non-root, read-only security context
+    asserts:
+      - equal:
+          path: spec.template.spec.securityContext.runAsNonRoot
+          value: true
+      - equal:
+          path: spec.template.spec.containers[0].securityContext.readOnlyRootFilesystem
+          value: true
+  - it: exposes the configured cache duration
+    set:
+      config.cacheFor: 10m
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: SPEEDTEST_CACHE_FOR
+            value: 10m

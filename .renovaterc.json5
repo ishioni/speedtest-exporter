@@ -1,0 +1,12 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:recommended"],
+  postUpdateOptions: ["gomodTidy", "gomodUpdateImportPaths"],
+  packageRules: [
+    {
+      groupName: "Go toolchain",
+      matchManagers: ["mise", "gomod", "dockerfile"],
+      matchDepNames: ["go", "golang"],
+    },
+  ],
+}

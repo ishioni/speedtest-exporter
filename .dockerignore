@@ -1,5 +1,9 @@
 .git
-License
-*.md
-Dockerfile
 .github
+.mise
+charts
+bin
+cover.out
+coverage.txt
+README.md
+LICENSE

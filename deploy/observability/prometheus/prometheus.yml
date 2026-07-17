@@ -1,0 +1,12 @@
+global:
+  # A shorter development interval makes the first dashboard result arrive
+  # promptly; the exporter still caches each live test for five minutes.
+  scrape_interval: 2m
+  scrape_timeout: 120s
+  evaluation_interval: 2m
+
+scrape_configs:
+  - job_name: speedtest-exporter
+    static_configs:
+      - targets:
+          - speedtest-exporter:9798

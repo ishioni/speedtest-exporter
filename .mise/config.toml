@@ -1,0 +1,90 @@
+# mise is the project toolchain source of truth. Run `mise tasks` to discover
+# the same build, test, lint, and chart commands used by CI.
+
+[tools]
+go = "1.26.5"
+golangci-lint = "2.12.2"
+helm = "4.2.3"
+helm-docs = "1.14.2"
+"aqua:dadav/helm-schema" = "0.23.4"
+lefthook = "2.1.10"
+oxfmt = "0.59.0"
+
+[tasks.build]
+description = "Compile the exporter"
+run = "go build ./..."
+
+[tasks.vet]
+description = "Run go vet"
+run = "go vet ./..."
+
+[tasks.test]
+description = "Run unit tests with coverage"
+run = "go test -timeout 30s ./... -coverprofile=cover.out"
+
+[tasks.fmt]
+description = "Format Go sources"
+run = "gofmt -w cmd internal"
+
+[tasks.fmt-check]
+description = "Verify Go formatting"
+run = "test -z \"$(gofmt -l cmd internal)\""
+
+[tasks.oxfmt]
+description = "Format YAML, JSON, Markdown, and other non-Go project files"
+run = "oxfmt --write ."
+
+[tasks.oxfmt-check]
+description = "Verify non-Go project formatting"
+run = "oxfmt --check ."
+
+[tasks.lint]
+description = "Run golangci-lint"
+run = "golangci-lint run"
+
+[tasks.tidy-check]
+description = "Verify go.mod and go.sum are tidy"
+run = "go mod tidy && git diff --exit-code go.mod go.sum"
+
+[tasks.helm-lint]
+description = "Lint the Helm chart"
+run = "helm lint charts/speedtest-exporter"
+
+[tasks.helm-unittest]
+description = "Run Helm unit tests (requires the helm-unittest plugin)"
+run = "helm unittest charts/speedtest-exporter"
+
+[tasks.helm-template]
+description = "Render the Helm chart"
+run = "helm template speedtest-exporter charts/speedtest-exporter"
+
+[tasks.generate]
+description = "Regenerate committed Helm README and values schema"
+run = "helm-docs --chart-search-root=charts --log-level=warn && helm-schema --chart-search-root charts/speedtest-exporter --skip-auto-generation required,additionalProperties --append-newline"
+
+[tasks.generate-check]
+description = "Verify generated Helm files are up to date"
+run = "mise run generate && git diff --exit-code charts/speedtest-exporter/README.md charts/speedtest-exporter/values.schema.json"
+
+[tasks.dev]
+description = "Run the exporter locally (requires the official speedtest binary on PATH)"
+run = "go run ./cmd/speedtest-exporter"
+
+[tasks.dev-observability-up]
+description = "Build and start the local exporter, Prometheus, and Grafana harness"
+run = "docker compose -f deploy/observability/compose.yaml up --build --detach"
+
+[tasks.dev-observability-logs]
+description = "Follow logs from the local observability harness"
+run = "docker compose -f deploy/observability/compose.yaml logs --follow"
+
+[tasks.dev-observability-down]
+description = "Stop the local observability harness while retaining its data"
+run = "docker compose -f deploy/observability/compose.yaml down"
+
+[tasks.dev-observability-reset]
+description = "Stop the local observability harness and delete Prometheus/Grafana data"
+run = "docker compose -f deploy/observability/compose.yaml down --volumes"
+
+[hooks]
+postinstall = "lefthook install"
