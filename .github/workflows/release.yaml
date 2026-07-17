@@ -58,7 +58,9 @@ jobs:
       - name: Sign image
         uses: sigstore/cosign-installer@d58896d6a5c43a6236e09de42e6aaeea069becde # v3.9.0
       - name: Cosign image
-        run: cosign sign --yes "ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}"
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
+        run: cosign sign --yes "$IMAGE"
 
   helm:
     name: Publish Helm chart
@@ -76,11 +78,15 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@1a275c3f98a5f1b6c4b4d9a8b3b807f3429b0d78 # v4.3.1
       - name: Pin image digest
+        env:
+          IMAGE_DIGEST: ${{ needs.image.outputs.digest }}
         run: >-
-          sed -i 's|digest: ""|digest: "${{ needs.image.outputs.digest }}"|'
+          sed -i "s|digest: \"\"|digest: \"${IMAGE_DIGEST}\"|"
           charts/speedtest-exporter/values.yaml
       - name: Package Helm chart
-        run: helm package charts/speedtest-exporter --version "${{ github.event.release.tag_name }}" --app-version "${{ github.event.release.tag_name }}"
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: helm package charts/speedtest-exporter --version "$RELEASE_TAG" --app-version "$RELEASE_TAG"
       - name: Log in to GHCR
         uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
@@ -88,8 +94,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Helm chart
-        run: helm push "speedtest-exporter-${{ github.event.release.tag_name }}.tgz" "oci://ghcr.io/${{ github.repository_owner }}/charts"
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: helm push "speedtest-exporter-${RELEASE_TAG}.tgz" "oci://ghcr.io/${REPOSITORY_OWNER}/charts"
       - name: Install Cosign
         uses: sigstore/cosign-installer@d58896d6a5c43a6236e09de42e6aaeea069becde # v3.9.0
       - name: Sign Helm chart
-        run: cosign sign --yes "ghcr.io/${{ github.repository_owner }}/charts/speedtest-exporter:${{ github.event.release.tag_name }}"
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+        run: cosign sign --yes "ghcr.io/${REPOSITORY_OWNER}/charts/speedtest-exporter:${RELEASE_TAG}"
