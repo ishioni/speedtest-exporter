@@ -1,92 +1,108 @@
 ---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Release
 
 on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "**.md"
+      - ".release-please-manifest.json"
   release:
     types: [published]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'release' }}
 
 permissions:
   contents: read
 
 jobs:
-  image:
-    name: Publish image
+  versions:
+    name: Resolve versions
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: write
-      id-token: write
     outputs:
-      digest: ${{ steps.build.outputs.digest }}
+      go-version: ${{ steps.versions.outputs.go-version }}
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@9fbd8b31193ea9b7c82ed5d27527aef02eacf82b # v3.7.0
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.12.0
-      - name: Log in to GHCR
-        uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
+      - name: Setup Mise
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
         with:
-          registry: ghcr.io
+          cache: false
+          experimental: true
+          install: false
+      - name: Read configured Go version
+        id: versions
+        run: echo "go-version=$(mise config get tools.go)" >> "$GITHUB_OUTPUT"
+
+  image:
+    name: Publish image
+    needs: versions
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    uses: docker/github-builder/.github/workflows/build.yml@3415a188caae9a0da7fba83bc06985776e0b1790 # v1.14.0
+    with:
+      build-args: |
+        VERSION=${{ github.ref_name }}
+        REVISION=${{ github.sha }}
+        GO_VERSION=${{ needs.versions.outputs.go-version }}
+      cache: true
+      meta-images: ghcr.io/${{ github.repository }}
+      meta-tags: |
+        type=semver,pattern={{version}}
+        type=raw,value=latest,enable=${{ github.event_name == 'release' }}
+        type=ref,event=branch
+      output: image
+      platforms: linux/amd64,linux/arm64
+      push: true
+      sbom: true
+      set-meta-annotations: true
+      set-meta-labels: true
+      sign: true
+    secrets:
+      registry-auths: |
+        - registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Docker metadata
-        id: meta
-        uses: docker/metadata-action@c1e51972afc2121e065aed6d45c65596fe445f3f # v5.8.0
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: |
-            type=raw,value=${{ github.event.release.tag_name }}
-            type=raw,value=latest
-      - name: Build and push
-        id: build
-        uses: docker/build-push-action@5cd64c11c943c725b81486e178f4f3e9c35eecf3 # v6.18.0
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            VERSION=${{ github.event.release.tag_name }}
-            REVISION=${{ github.sha }}
-          sbom: true
-          provenance: mode=max
-      - name: Sign image
-        uses: sigstore/cosign-installer@d58896d6a5c43a6236e09de42e6aaeea069becde # v3.9.0
-      - name: Cosign image
-        env:
-          IMAGE: ghcr.io/${{ github.repository }}@${{ steps.build.outputs.digest }}
-        run: cosign sign --yes "$IMAGE"
 
   helm:
     name: Publish Helm chart
     needs: image
+    if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: write
       id-token: write
+      packages: write
+    env:
+      DIGEST: ${{ needs.image.outputs.digest }}
+      REPOSITORY_OWNER: ${{ github.repository_owner }}
+      VERSION: ${{ github.event.release.tag_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
-      - name: Set up Helm
-        uses: azure/setup-helm@1a275c3f98a5f1b6c4b4d9a8b3b807f3429b0d78 # v4.3.1
-      - name: Pin image digest
-        env:
-          IMAGE_DIGEST: ${{ needs.image.outputs.digest }}
-        run: >-
-          sed -i "s|digest: \"\"|digest: \"${IMAGE_DIGEST}\"|"
-          charts/speedtest-exporter/values.yaml
+      - name: Setup Mise
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+        with:
+          cache: false
+          experimental: true
+          install_args: --locked
+      - name: Pin the released image digest into the chart
+        run: |
+          [ -n "${DIGEST}" ] || { echo "::error::empty image digest from build job"; exit 1; }
+          yq -i '.image.digest = strenv(DIGEST)' charts/speedtest-exporter/values.yaml
       - name: Package Helm chart
-        env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: helm package charts/speedtest-exporter --version "$RELEASE_TAG" --app-version "$RELEASE_TAG"
+        run: helm package charts/speedtest-exporter --version "${VERSION}" --app-version "${VERSION}"
       - name: Log in to GHCR
         uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0
         with:
@@ -94,14 +110,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish Helm chart
-        env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
-        run: helm push "speedtest-exporter-${RELEASE_TAG}.tgz" "oci://ghcr.io/${REPOSITORY_OWNER}/charts"
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@d58896d6a5c43a6236e09de42e6aaeea069becde # v3.9.0
+        run: helm push "speedtest-exporter-${VERSION}.tgz" "oci://ghcr.io/${REPOSITORY_OWNER}/charts"
       - name: Sign Helm chart
-        env:
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          REPOSITORY_OWNER: ${{ github.repository_owner }}
-        run: cosign sign --yes "ghcr.io/${REPOSITORY_OWNER}/charts/speedtest-exporter:${RELEASE_TAG}"
+        run: cosign sign --yes "ghcr.io/${REPOSITORY_OWNER}/charts/speedtest-exporter:${VERSION}"
