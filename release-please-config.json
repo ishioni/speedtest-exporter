@@ -1,11 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
   "release-type": "simple",
+  "bootstrap-sha": "8e4a39b9c0282102a9868f43b60dc99465dd0974",
   "exclude-paths": ["release-please-config.json", ".release-please-manifest.json"],
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
       "release-type": "simple",
+      "initial-version": "0.1.0",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": true,
       "include-component-in-tag": false,
