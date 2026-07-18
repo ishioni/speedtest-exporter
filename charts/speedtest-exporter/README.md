@@ -53,28 +53,28 @@ Kubernetes: `>=1.25.0-0`
 | monitoring.dashboards.labels | object | `{}` | Labels added to the dashboard ConfigMap. For the Grafana sidecar, add any labels your deployment selects on. |
 | monitoring.dashboards.namespace | string | `""` | Namespace for dashboard objects; defaults to the release namespace. |
 | monitoring.prometheusRule.alerts.exporterAbsent.enabled | bool | `true` | Alert when the exporter is absent or has no healthy scrape target. |
-| monitoring.prometheusRule.alerts.exporterAbsent.for | string | `"75m"` | Time the exporter must be unavailable before alerting. |
+| monitoring.prometheusRule.alerts.exporterAbsent.for | string | `"5m"` | Time the exporter must be unavailable before alerting. |
 | monitoring.prometheusRule.alerts.exporterAbsent.severity | string | `"critical"` | Severity for the exporter-absent alert. |
 | monitoring.prometheusRule.alerts.highJitterLatency.enabled | bool | `true` | Alert when average jitter exceeds the configured millisecond threshold. |
-| monitoring.prometheusRule.alerts.highJitterLatency.for | string | `"0m"` | Time the average must remain above threshold before alerting. |
+| monitoring.prometheusRule.alerts.highJitterLatency.for | string | `"10m"` | Time the average must remain above threshold before alerting. |
 | monitoring.prometheusRule.alerts.highJitterLatency.severity | string | `"warning"` | Severity for the high-jitter alert. |
 | monitoring.prometheusRule.alerts.highJitterLatency.threshold | int | `30` | Jitter threshold in milliseconds. |
-| monitoring.prometheusRule.alerts.highJitterLatency.window | string | `"4h"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.highJitterLatency.window | string | `"30m"` | Lookback window used for the average. |
 | monitoring.prometheusRule.alerts.highPingLatency.enabled | bool | `true` | Alert when average ping latency exceeds the configured millisecond threshold. |
-| monitoring.prometheusRule.alerts.highPingLatency.for | string | `"0m"` | Time the average must remain above threshold before alerting. |
+| monitoring.prometheusRule.alerts.highPingLatency.for | string | `"10m"` | Time the average must remain above threshold before alerting. |
 | monitoring.prometheusRule.alerts.highPingLatency.severity | string | `"warning"` | Severity for the high-ping alert. |
 | monitoring.prometheusRule.alerts.highPingLatency.threshold | int | `15` | Ping threshold in milliseconds. |
-| monitoring.prometheusRule.alerts.highPingLatency.window | string | `"4h"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.highPingLatency.window | string | `"30m"` | Lookback window used for the average. |
 | monitoring.prometheusRule.alerts.slowDownload.enabled | bool | `true` | Alert when average download speed is below the configured Mbps threshold. |
-| monitoring.prometheusRule.alerts.slowDownload.for | string | `"0m"` | Time the average must remain below threshold before alerting. |
+| monitoring.prometheusRule.alerts.slowDownload.for | string | `"10m"` | Time the average must remain below threshold before alerting. |
 | monitoring.prometheusRule.alerts.slowDownload.severity | string | `"warning"` | Severity for the slow-download alert. |
 | monitoring.prometheusRule.alerts.slowDownload.threshold | int | `400` | Download threshold in Mbps. |
-| monitoring.prometheusRule.alerts.slowDownload.window | string | `"4h"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.slowDownload.window | string | `"30m"` | Lookback window used for the average. |
 | monitoring.prometheusRule.alerts.slowUpload.enabled | bool | `true` | Alert when average upload speed is below the configured Mbps threshold. |
-| monitoring.prometheusRule.alerts.slowUpload.for | string | `"0m"` | Time the average must remain below threshold before alerting. |
+| monitoring.prometheusRule.alerts.slowUpload.for | string | `"10m"` | Time the average must remain below threshold before alerting. |
 | monitoring.prometheusRule.alerts.slowUpload.severity | string | `"warning"` | Severity for the slow-upload alert. |
 | monitoring.prometheusRule.alerts.slowUpload.threshold | int | `400` | Upload threshold in Mbps. |
-| monitoring.prometheusRule.alerts.slowUpload.window | string | `"4h"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.slowUpload.window | string | `"30m"` | Lookback window used for the average. |
 | monitoring.prometheusRule.annotations | object | `{}` | Annotations added to the PrometheusRule. |
 | monitoring.prometheusRule.enabled | bool | `false` | Create a Prometheus Operator PrometheusRule containing availability and connection-quality alerts. |
 | monitoring.prometheusRule.groupName | string | `"speedtest-exporter"` | Alert group name. |

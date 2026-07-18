@@ -227,7 +227,7 @@
                       "type": "boolean"
                     },
                     "for": {
-                      "default": "75m",
+                      "default": "5m",
                       "description": "Time the exporter must be unavailable before alerting.",
                       "title": "for",
                       "type": "string"
@@ -252,7 +252,7 @@
                       "type": "boolean"
                     },
                     "for": {
-                      "default": "0m",
+                      "default": "10m",
                       "description": "Time the average must remain above threshold before alerting.",
                       "title": "for",
                       "type": "string"
@@ -270,7 +270,7 @@
                       "type": "integer"
                     },
                     "window": {
-                      "default": "4h",
+                      "default": "30m",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -289,7 +289,7 @@
                       "type": "boolean"
                     },
                     "for": {
-                      "default": "0m",
+                      "default": "10m",
                       "description": "Time the average must remain above threshold before alerting.",
                       "title": "for",
                       "type": "string"
@@ -307,7 +307,7 @@
                       "type": "integer"
                     },
                     "window": {
-                      "default": "4h",
+                      "default": "30m",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -326,7 +326,7 @@
                       "type": "boolean"
                     },
                     "for": {
-                      "default": "0m",
+                      "default": "10m",
                       "description": "Time the average must remain below threshold before alerting.",
                       "title": "for",
                       "type": "string"
@@ -344,7 +344,7 @@
                       "type": "integer"
                     },
                     "window": {
-                      "default": "4h",
+                      "default": "30m",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -363,7 +363,7 @@
                       "type": "boolean"
                     },
                     "for": {
-                      "default": "0m",
+                      "default": "10m",
                       "description": "Time the average must remain below threshold before alerting.",
                       "title": "for",
                       "type": "string"
@@ -381,7 +381,7 @@
                       "type": "integer"
                     },
                     "window": {
-                      "default": "4h",
+                      "default": "30m",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"

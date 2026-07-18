@@ -143,51 +143,51 @@ monitoring:
         # -- Alert when the exporter is absent or has no healthy scrape target.
         enabled: true
         # -- Time the exporter must be unavailable before alerting.
-        for: 75m
+        for: 5m
         # -- Severity for the exporter-absent alert.
         severity: critical
       slowDownload:
         # -- Alert when average download speed is below the configured Mbps threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 4h
+        window: 30m
         # -- Download threshold in Mbps.
         threshold: 400
         # -- Time the average must remain below threshold before alerting.
-        for: 0m
+        for: 10m
         # -- Severity for the slow-download alert.
         severity: warning
       slowUpload:
         # -- Alert when average upload speed is below the configured Mbps threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 4h
+        window: 30m
         # -- Upload threshold in Mbps.
         threshold: 400
         # -- Time the average must remain below threshold before alerting.
-        for: 0m
+        for: 10m
         # -- Severity for the slow-upload alert.
         severity: warning
       highPingLatency:
         # -- Alert when average ping latency exceeds the configured millisecond threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 4h
+        window: 30m
         # -- Ping threshold in milliseconds.
         threshold: 15
         # -- Time the average must remain above threshold before alerting.
-        for: 0m
+        for: 10m
         # -- Severity for the high-ping alert.
         severity: warning
       highJitterLatency:
         # -- Alert when average jitter exceeds the configured millisecond threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 4h
+        window: 30m
         # -- Jitter threshold in milliseconds.
         threshold: 30
         # -- Time the average must remain above threshold before alerting.
-        for: 0m
+        for: 10m
         # -- Severity for the high-jitter alert.
         severity: warning
 
