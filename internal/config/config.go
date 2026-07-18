@@ -72,16 +72,13 @@ func duration(name string, fallback time.Duration, allowZero bool) (time.Duratio
 
 	parsed, err := time.ParseDuration(raw)
 	if err != nil || parsed < 0 || (parsed == 0 && !allowZero) {
-		return 0, fmt.Errorf("%s must be %s (for example 90s or 2m)", name, positiveDescription(allowZero))
+		description := "a positive duration"
+		if allowZero {
+			description = "zero or a positive duration"
+		}
+		return 0, fmt.Errorf("%s must be %s (for example 90s or 2m)", name, description)
 	}
 	return parsed, nil
-}
-
-func positiveDescription(allowZero bool) string {
-	if allowZero {
-		return "zero or a positive duration"
-	}
-	return "a positive duration"
 }
 
 func value(name, fallback string) string {
