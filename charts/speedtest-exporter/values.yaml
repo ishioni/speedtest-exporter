@@ -228,5 +228,5 @@ tolerations: []
 tests:
   image:
     repository: curlimages/curl
-    tag: 8.17.0
+    tag: 8.21.0
     pullPolicy: IfNotPresent
