@@ -18,13 +18,13 @@ func TestLoadDefaults(t *testing.T) {
 		t.Fatalf("Load() error = %v", err)
 	}
 	if cfg.ListenAddress != ":9798" || cfg.Timeout != 90*time.Second || cfg.CacheFor != 0 {
-		t.Fatalf("Load() = %#v, want legacy-compatible defaults", cfg)
+		t.Fatalf("Load() = %#v, want defaults", cfg)
 	}
 }
 
-func TestLoadSupportsLegacySecondValues(t *testing.T) {
-	t.Setenv("SPEEDTEST_TIMEOUT", "42")
-	t.Setenv("SPEEDTEST_CACHE_FOR", "5")
+func TestLoadSupportsGoDurationValues(t *testing.T) {
+	t.Setenv("SPEEDTEST_TIMEOUT", "42s")
+	t.Setenv("SPEEDTEST_CACHE_FOR", "5s")
 
 	cfg, err := Load()
 	if err != nil {
@@ -36,7 +36,7 @@ func TestLoadSupportsLegacySecondValues(t *testing.T) {
 }
 
 func TestLoadRejectsInvalidTimeout(t *testing.T) {
-	t.Setenv("SPEEDTEST_TIMEOUT", "0")
+	t.Setenv("SPEEDTEST_TIMEOUT", "42")
 	if _, err := Load(); err == nil {
 		t.Fatal("Load() error = nil, want validation error")
 	}

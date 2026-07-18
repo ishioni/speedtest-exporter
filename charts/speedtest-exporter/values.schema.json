@@ -43,7 +43,7 @@
         },
         "timeout": {
           "default": "90s",
-          "description": "Maximum duration for a CLI run. Supports Go durations or legacy whole seconds.",
+          "description": "Maximum duration for a CLI run in Go duration syntax, for example 90s or 2m.",
           "title": "timeout",
           "type": "string"
         }

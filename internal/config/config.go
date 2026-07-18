@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -71,18 +70,9 @@ func duration(name string, fallback time.Duration, allowZero bool) (time.Duratio
 		return fallback, nil
 	}
 
-	// The legacy exporter accepted a whole number of seconds. Retain that form
-	// while also allowing standard Go durations such as "2m".
-	if seconds, err := strconv.ParseInt(raw, 10, 64); err == nil {
-		if seconds < 0 || (seconds == 0 && !allowZero) {
-			return 0, fmt.Errorf("%s must be %s", name, positiveDescription(allowZero))
-		}
-		return time.Duration(seconds) * time.Second, nil
-	}
-
 	parsed, err := time.ParseDuration(raw)
 	if err != nil || parsed < 0 || (parsed == 0 && !allowZero) {
-		return 0, fmt.Errorf("%s must be %s (for example 90 or 90s)", name, positiveDescription(allowZero))
+		return 0, fmt.Errorf("%s must be %s (for example 90s or 2m)", name, positiveDescription(allowZero))
 	}
 	return parsed, nil
 }

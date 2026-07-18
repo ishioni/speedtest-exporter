@@ -34,7 +34,7 @@ Kubernetes: `>=1.25.0-0`
 | config.logFormat | string | `"json"` | Log format: json or text. |
 | config.logLevel | string | `"info"` | Log level: debug, info, warn, or error. |
 | config.serverID | string | `""` |  |
-| config.timeout | string | `"90s"` | Maximum duration for a CLI run. Supports Go durations or legacy whole seconds. |
+| config.timeout | string | `"90s"` | Maximum duration for a CLI run in Go duration syntax, for example 90s or 2m. |
 | deploymentAnnotations | object | `{}` | Deployment annotations. |
 | fullnameOverride | string | `""` | Override the full release name. |
 | image.digest | string | `""` | Image digest (sha256:…); when set, it overrides tag. |

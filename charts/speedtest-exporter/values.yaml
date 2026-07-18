@@ -25,7 +25,7 @@ fullnameOverride: ""
 config:
   # -- Optional Ookla server ID passed to `speedtest --server-id`.
   serverID: ""
-  # -- Maximum duration for a CLI run. Supports Go durations or legacy whole seconds.
+  # -- Maximum duration for a CLI run in Go duration syntax, for example 90s or 2m.
   timeout: 90s
   # -- How long to reuse the latest completed result. `0` runs a test on every scrape.
   cacheFor: 5m

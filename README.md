@@ -70,16 +70,16 @@ Go and process collector metrics are also exposed. A CLI error still returns HTT
 
 All configuration is environment based:
 
-| Variable                   | Default           | Description                                                                 |
-| -------------------------- | ----------------- | --------------------------------------------------------------------------- |
-| `SPEEDTEST_PORT`           | `9798`            | Legacy-compatible listen port.                                              |
-| `SPEEDTEST_LISTEN_ADDRESS` | `:SPEEDTEST_PORT` | Full listen address; overrides the port variable.                           |
-| `SPEEDTEST_BINARY`         | `speedtest`       | Path/name of the official Ookla executable.                                 |
-| `SPEEDTEST_SERVER`         | unset             | Optional Ookla server ID.                                                   |
-| `SPEEDTEST_TIMEOUT`        | `90`              | CLI time limit. Accepts legacy whole seconds or a Go duration such as `2m`. |
-| `SPEEDTEST_CACHE_FOR`      | `0`               | Result cache TTL. `0` runs a test for every scrape.                         |
-| `SPEEDTEST_LOG_LEVEL`      | `info`            | `debug`, `info`, `warn`, or `error`.                                        |
-| `SPEEDTEST_LOG_FORMAT`     | `json`            | `json` or `text`.                                                           |
+| Variable                   | Default           | Description                                                         |
+| -------------------------- | ----------------- | ------------------------------------------------------------------- |
+| `SPEEDTEST_PORT`           | `9798`            | Listen port.                                                        |
+| `SPEEDTEST_LISTEN_ADDRESS` | `:SPEEDTEST_PORT` | Full listen address; overrides the port variable.                   |
+| `SPEEDTEST_BINARY`         | `speedtest`       | Path/name of the official Ookla executable.                         |
+| `SPEEDTEST_SERVER`         | unset             | Optional Ookla server ID.                                           |
+| `SPEEDTEST_TIMEOUT`        | `90s`             | CLI time limit. Uses Go duration syntax, for example `90s` or `2m`. |
+| `SPEEDTEST_CACHE_FOR`      | `0`               | Result cache TTL. `0` runs a test for every scrape.                 |
+| `SPEEDTEST_LOG_LEVEL`      | `info`            | `debug`, `info`, `warn`, or `error`.                                |
+| `SPEEDTEST_LOG_FORMAT`     | `json`            | `json` or `text`.                                                   |
 
 Endpoints are `/metrics`, `/healthz`, `/readyz`, and `/`.
 
