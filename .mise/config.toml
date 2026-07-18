@@ -47,7 +47,7 @@ run = "golangci-lint run"
 
 [tasks.zizmor]
 description = "Audit GitHub Actions workflows for security issues"
-run = "zizmor ."
+run = "zizmor .github"
 
 [tasks.tidy-check]
 description = "Verify go.mod and go.sum are tidy"
