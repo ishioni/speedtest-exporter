@@ -1,3 +1,5 @@
+CHANGELOG.md
+.release-please-manifest.json
 charts/speedtest-exporter/README.md
 charts/speedtest-exporter/values.schema.json
 charts/speedtest-exporter/templates/**
