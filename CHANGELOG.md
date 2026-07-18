@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/ishioni/speedtest-exporter/compare/0.2.0...0.2.1) (2026-07-18)
+
+
+### Bug Fixes
+
+* **helm:** saner default values ([d53d4f4](https://github.com/ishioni/speedtest-exporter/commit/d53d4f4b65752b8dfa9ce205e5268860f2f31838))
+
 ## [0.2.0](https://github.com/ishioni/speedtest-exporter/compare/0.1.0...0.2.0) (2026-07-18)
 
 
