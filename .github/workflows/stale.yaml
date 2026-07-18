@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Mark stale issues and pull requests
-        uses: actions/stale@3a9fdfde2562807e8dd4a0a5585e1fcb6121c154 # v10.1.0
+        uses: actions/stale@5f858e3efba33a5ca4407a664cc011ad407f2008 # v10.1.0
         with:
           stale-issue-message: "This issue is stale because it has been open for 90 days with no activity."
           stale-pr-message: "This pull request is stale because it has been open for 30 days with no activity."
