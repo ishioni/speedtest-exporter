@@ -28,7 +28,7 @@ config:
   # -- Maximum duration for a CLI run in Go duration syntax, for example 90s or 2m.
   timeout: 90s
   # -- How long to reuse the latest completed result. `0` runs a test on every scrape.
-  cacheFor: 5m
+  cacheFor: 30m
   # -- Log level: debug, info, warn, or error.
   logLevel: info
   # -- Log format: json or text.
@@ -113,9 +113,9 @@ monitoring:
     # -- Create a Prometheus Operator ServiceMonitor.
     enabled: false
     # -- Scrape interval. Keep it no shorter than config.cacheFor to avoid unnecessary tests.
-    interval: 5m
+    interval: 1m
     # -- Must exceed config.timeout plus CLI startup overhead.
-    scrapeTimeout: 120s
+    scrapeTimeout: 30s
     # -- Metrics path.
     path: /metrics
     # -- Service label used as Prometheus's stable job label. The default is the Helm release name.
@@ -150,9 +150,9 @@ monitoring:
         # -- Alert when average download speed is below the configured Mbps threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 30m
+        window: 3h
         # -- Download threshold in Mbps.
-        threshold: 400
+        threshold: 100
         # -- Time the average must remain below threshold before alerting.
         for: 10m
         # -- Severity for the slow-download alert.
@@ -161,9 +161,9 @@ monitoring:
         # -- Alert when average upload speed is below the configured Mbps threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 30m
+        window: 3h
         # -- Upload threshold in Mbps.
-        threshold: 400
+        threshold: 10
         # -- Time the average must remain below threshold before alerting.
         for: 10m
         # -- Severity for the slow-upload alert.
@@ -172,7 +172,7 @@ monitoring:
         # -- Alert when average ping latency exceeds the configured millisecond threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 30m
+        window: 3h
         # -- Ping threshold in milliseconds.
         threshold: 15
         # -- Time the average must remain above threshold before alerting.
@@ -183,7 +183,7 @@ monitoring:
         # -- Alert when average jitter exceeds the configured millisecond threshold.
         enabled: true
         # -- Lookback window used for the average.
-        window: 30m
+        window: 3h
         # -- Jitter threshold in milliseconds.
         threshold: 30
         # -- Time the average must remain above threshold before alerting.

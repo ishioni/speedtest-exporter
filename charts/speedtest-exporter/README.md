@@ -29,7 +29,7 @@ Kubernetes: `>=1.25.0-0`
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Affinity rules for the exporter Pod. |
-| config.cacheFor | string | `"5m"` | How long to reuse the latest completed result. `0` runs a test on every scrape. |
+| config.cacheFor | string | `"30m"` | How long to reuse the latest completed result. `0` runs a test on every scrape. |
 | config.extraEnv | list | `[]` | Extra environment variables merged into the exporter container. |
 | config.logFormat | string | `"json"` | Log format: json or text. |
 | config.logLevel | string | `"info"` | Log level: debug, info, warn, or error. |
@@ -59,35 +59,35 @@ Kubernetes: `>=1.25.0-0`
 | monitoring.prometheusRule.alerts.highJitterLatency.for | string | `"10m"` | Time the average must remain above threshold before alerting. |
 | monitoring.prometheusRule.alerts.highJitterLatency.severity | string | `"warning"` | Severity for the high-jitter alert. |
 | monitoring.prometheusRule.alerts.highJitterLatency.threshold | int | `30` | Jitter threshold in milliseconds. |
-| monitoring.prometheusRule.alerts.highJitterLatency.window | string | `"30m"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.highJitterLatency.window | string | `"3h"` | Lookback window used for the average. |
 | monitoring.prometheusRule.alerts.highPingLatency.enabled | bool | `true` | Alert when average ping latency exceeds the configured millisecond threshold. |
 | monitoring.prometheusRule.alerts.highPingLatency.for | string | `"10m"` | Time the average must remain above threshold before alerting. |
 | monitoring.prometheusRule.alerts.highPingLatency.severity | string | `"warning"` | Severity for the high-ping alert. |
 | monitoring.prometheusRule.alerts.highPingLatency.threshold | int | `15` | Ping threshold in milliseconds. |
-| monitoring.prometheusRule.alerts.highPingLatency.window | string | `"30m"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.highPingLatency.window | string | `"3h"` | Lookback window used for the average. |
 | monitoring.prometheusRule.alerts.slowDownload.enabled | bool | `true` | Alert when average download speed is below the configured Mbps threshold. |
 | monitoring.prometheusRule.alerts.slowDownload.for | string | `"10m"` | Time the average must remain below threshold before alerting. |
 | monitoring.prometheusRule.alerts.slowDownload.severity | string | `"warning"` | Severity for the slow-download alert. |
-| monitoring.prometheusRule.alerts.slowDownload.threshold | int | `400` | Download threshold in Mbps. |
-| monitoring.prometheusRule.alerts.slowDownload.window | string | `"30m"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.slowDownload.threshold | int | `100` | Download threshold in Mbps. |
+| monitoring.prometheusRule.alerts.slowDownload.window | string | `"3h"` | Lookback window used for the average. |
 | monitoring.prometheusRule.alerts.slowUpload.enabled | bool | `true` | Alert when average upload speed is below the configured Mbps threshold. |
 | monitoring.prometheusRule.alerts.slowUpload.for | string | `"10m"` | Time the average must remain below threshold before alerting. |
 | monitoring.prometheusRule.alerts.slowUpload.severity | string | `"warning"` | Severity for the slow-upload alert. |
-| monitoring.prometheusRule.alerts.slowUpload.threshold | int | `400` | Upload threshold in Mbps. |
-| monitoring.prometheusRule.alerts.slowUpload.window | string | `"30m"` | Lookback window used for the average. |
+| monitoring.prometheusRule.alerts.slowUpload.threshold | int | `10` | Upload threshold in Mbps. |
+| monitoring.prometheusRule.alerts.slowUpload.window | string | `"3h"` | Lookback window used for the average. |
 | monitoring.prometheusRule.annotations | object | `{}` | Annotations added to the PrometheusRule. |
 | monitoring.prometheusRule.enabled | bool | `false` | Create a Prometheus Operator PrometheusRule containing availability and connection-quality alerts. |
 | monitoring.prometheusRule.groupName | string | `"speedtest-exporter"` | Alert group name. |
 | monitoring.prometheusRule.labels | object | `{}` | Labels added to the PrometheusRule. Set labels required by your PrometheusRule selector here. |
 | monitoring.serviceMonitor.annotations | object | `{}` | ServiceMonitor annotations. |
 | monitoring.serviceMonitor.enabled | bool | `false` | Create a Prometheus Operator ServiceMonitor. |
-| monitoring.serviceMonitor.interval | string | `"5m"` | Scrape interval. Keep it no shorter than config.cacheFor to avoid unnecessary tests. |
+| monitoring.serviceMonitor.interval | string | `"1m"` | Scrape interval. Keep it no shorter than config.cacheFor to avoid unnecessary tests. |
 | monitoring.serviceMonitor.jobLabel | string | `"app.kubernetes.io/instance"` | Service label used as Prometheus's stable job label. The default is the Helm release name. |
 | monitoring.serviceMonitor.labels | object | `{}` | ServiceMonitor labels. |
 | monitoring.serviceMonitor.metricRelabelings | list | `[]` | Prometheus metric relabelings. |
 | monitoring.serviceMonitor.path | string | `"/metrics"` | Metrics path. |
 | monitoring.serviceMonitor.relabelings | list | `[]` | Prometheus relabelings. |
-| monitoring.serviceMonitor.scrapeTimeout | string | `"120s"` | Must exceed config.timeout plus CLI startup overhead. |
+| monitoring.serviceMonitor.scrapeTimeout | string | `"30s"` | Must exceed config.timeout plus CLI startup overhead. |
 | nameOverride | string | `""` | Override the chart name used in resource names. |
 | nodeSelector | object | `{}` | Node selector for the exporter Pod. |
 | podAnnotations | object | `{}` | Pod annotations. |

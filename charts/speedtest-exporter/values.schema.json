@@ -10,7 +10,7 @@
     "config": {
       "properties": {
         "cacheFor": {
-          "default": "5m",
+          "default": "30m",
           "description": "How long to reuse the latest completed result. `0` runs a test on every scrape.",
           "title": "cacheFor",
           "type": "string"
@@ -270,7 +270,7 @@
                       "type": "integer"
                     },
                     "window": {
-                      "default": "30m",
+                      "default": "3h",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -307,7 +307,7 @@
                       "type": "integer"
                     },
                     "window": {
-                      "default": "30m",
+                      "default": "3h",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -338,13 +338,13 @@
                       "type": "string"
                     },
                     "threshold": {
-                      "default": 400,
+                      "default": 100,
                       "description": "Download threshold in Mbps.",
                       "title": "threshold",
                       "type": "integer"
                     },
                     "window": {
-                      "default": "30m",
+                      "default": "3h",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -375,13 +375,13 @@
                       "type": "string"
                     },
                     "threshold": {
-                      "default": 400,
+                      "default": 10,
                       "description": "Upload threshold in Mbps.",
                       "title": "threshold",
                       "type": "integer"
                     },
                     "window": {
-                      "default": "30m",
+                      "default": "3h",
                       "description": "Lookback window used for the average.",
                       "title": "window",
                       "type": "string"
@@ -440,7 +440,7 @@
               "type": "boolean"
             },
             "interval": {
-              "default": "5m",
+              "default": "1m",
               "description": "Scrape interval. Keep it no shorter than config.cacheFor to avoid unnecessary tests.",
               "title": "interval",
               "type": "string"
@@ -480,7 +480,7 @@
               "type": "array"
             },
             "scrapeTimeout": {
-              "default": "120s",
+              "default": "30s",
               "description": "Must exceed config.timeout plus CLI startup overhead.",
               "title": "scrapeTimeout",
               "type": "string"
