@@ -3,12 +3,15 @@
 name: Renovate
 
 on:
+  schedule:
+    - cron: "20 * * * *"
   push:
     branches:
       - main
     paths:
       - .renovaterc.json5
       - .renovate/**.json5
+      - .github/renovate-entrypoint.sh
   workflow_dispatch:
 
 permissions: {}
@@ -17,7 +20,15 @@ jobs:
   renovate:
     name: Renovate
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: read
     steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
       - name: Generate Token
         uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         id: app-token
@@ -25,29 +36,50 @@ jobs:
           client-id: ${{ secrets.BOT_CLIENT_ID }}
           private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: ".github"
-          permission-actions: write
+          repositories: ${{ github.event.repository.name }}
+          permission-checks: write
+          permission-contents: write
+          permission-issues: write
+          permission-members: read
+          permission-pull-requests: write
+          permission-statuses: write
+          permission-vulnerability-alerts: read
+          permission-workflows: write
 
-      - name: Run Renovate
-        id: dispatch
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          REPO_NAME: ${{ github.event.repository.name }}
+      - name: Restore Renovate repository cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: /tmp/renovate/cache/renovate/repository
+          key: renovate-repository-cache-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: renovate-repository-cache-
+
+      - name: Align cache ownership for the Renovate container
         run: |
-          RUN_URL=$(gh workflow run renovate.yaml \
-            --repo "${{ github.repository_owner }}/.github" \
-            --ref main \
-            --field "autodiscoverFilter=${REPO_NAME}")
-          echo "run_id=${RUN_URL##*/}" >> "$GITHUB_OUTPUT"
+          sudo mkdir -p /tmp/renovate/cache/renovate/repository
+          sudo chown -R 12021:0 /tmp/renovate
 
-      - name: Await Renovate Completion
+      - name: Renovate
+        uses: renovatebot/github-action@22e0a16091fc706b04affe6ae53d5e3358ac4023 # v46.1.19
         env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          RUN_ID: ${{ steps.dispatch.outputs.run_id }}
-        run: gh run watch --repo "${{ github.repository_owner }}/.github" "${RUN_ID}" --exit-status
+          LOG_LEVEL: debug
+          RENOVATE_AUTODISCOVER: false
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_INTERNAL_CHECKS_FILTER: strict
+          RENOVATE_PLATFORM: github
+          RENOVATE_PLATFORM_COMMIT: true
+          RENOVATE_CUSTOM_ENV_VARIABLES: '{"MISE_TRUSTED_CONFIG_PATHS":"/tmp/renovate/repos"}'
+          RENOVATE_ALLOWED_UNSAFE_EXECUTIONS: '["goGenerate", "mise"]'
+          RENOVATE_ALLOWED_COMMANDS: '["^helm-docs ", "^helm-schema "]'
+          RENOVATE_REPOSITORY_CACHE: enabled
+          RENOVATE_PRESET_CACHE_PERSISTENCE: "true"
+        with:
+          docker-cmd-file: .github/renovate-entrypoint.sh
+          docker-user: root
+          token: ${{ steps.app-token.outputs.token }}
 
-      - name: Renovate Output
-        env:
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
-          RUN_ID: ${{ steps.dispatch.outputs.run_id }}
-        run: gh run view --repo "${{ github.repository_owner }}/.github" --log "${RUN_ID}"
+      - name: Save Renovate repository cache
+        if: always()
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: /tmp/renovate/cache/renovate/repository
+          key: renovate-repository-cache-${{ github.run_id }}-${{ github.run_attempt }}
