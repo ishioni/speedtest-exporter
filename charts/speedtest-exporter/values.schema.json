@@ -781,7 +781,7 @@
               "type": "string"
             },
             "tag": {
-              "default": "8.17.0",
+              "default": "8.21.0",
               "title": "tag",
               "type": "string"
             }

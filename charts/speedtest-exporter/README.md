@@ -107,7 +107,7 @@ Kubernetes: `>=1.25.0-0`
 | serviceAccount.name | string | `""` | ServiceAccount name; generated if empty. |
 | startupProbe | object | `{}` | Optional startup probe. Empty disables it. |
 | terminationGracePeriodSeconds | int | `30` | Grace period used for in-flight HTTP requests on termination. |
-| tests | object | `{"image":{"pullPolicy":"IfNotPresent","repository":"curlimages/curl","tag":"8.17.0"}}` | Image and pull policy used by `helm test`. |
+| tests | object | `{"image":{"pullPolicy":"IfNotPresent","repository":"curlimages/curl","tag":"8.21.0"}}` | Image and pull policy used by `helm test`. |
 | tolerations | list | `[]` | Tolerations for the exporter Pod. |
 
 ---
