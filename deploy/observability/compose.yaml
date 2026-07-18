@@ -1,0 +1,61 @@
+name: speedtest-exporter-observability
+
+services:
+  speedtest-exporter:
+    build:
+      context: ../..
+      dockerfile: Dockerfile
+      args:
+        VERSION: dev
+        REVISION: local-observability
+    environment:
+      # A real test transfers data. Keep the cache in step with Prometheus's
+      # scrape interval so dashboard refreshes do not cause additional tests.
+      SPEEDTEST_CACHE_FOR: 5m
+      SPEEDTEST_LOG_FORMAT: text
+    ports:
+      - "9799:9798"
+    networks:
+      - observability
+
+  prometheus:
+    image: prom/prometheus:v3.4.1
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - speedtest-exporter
+    networks:
+      - observability
+
+  grafana:
+    image: grafana/grafana:12.0.2
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      # Provision the exact dashboard artifact distributed by the Helm chart.
+      - ../../charts/speedtest-exporter/dashboards/speedtest-exporter.json:/var/lib/grafana/dashboards/speedtest-exporter.json:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - observability
+
+networks:
+  observability:
+    driver: bridge
+
+volumes:
+  grafana-data:
+  prometheus-data:

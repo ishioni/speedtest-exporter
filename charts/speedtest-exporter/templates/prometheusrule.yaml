@@ -1,0 +1,72 @@
+{{- if .Values.monitoring.prometheusRule.enabled -}}
+{{- $alerts := .Values.monitoring.prometheusRule.alerts -}}
+{{- $job := .Release.Name -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "speedtest-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "speedtest-exporter.labels" . | nindent 4 }}
+    {{- with .Values.monitoring.prometheusRule.labels }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
+    {{- end }}
+  {{- with .Values.monitoring.prometheusRule.annotations }}
+  annotations:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  groups:
+    - name: {{ .Values.monitoring.prometheusRule.groupName | quote }}
+      rules:
+        {{- if $alerts.exporterAbsent.enabled }}
+        - alert: SpeedtestExporterAbsent
+          expr: {{ printf "absent(up{job=%q} == 1)" $job | quote }}
+          for: {{ index $alerts.exporterAbsent "for" | quote }}
+          labels:
+            severity: {{ $alerts.exporterAbsent.severity | quote }}
+          annotations:
+            summary: Speedtest exporter is down
+            description: The speedtest exporter for Helm release {{ $job | quote }} has disappeared from Prometheus target discovery.
+        {{- end }}
+        {{- if $alerts.slowDownload.enabled }}
+        - alert: SpeedtestSlowInternetDownload
+          expr: {{ printf "avg_over_time(speedtest_download_bits_per_second{job=%q}[%s]) / 1000000 < %v" $job $alerts.slowDownload.window $alerts.slowDownload.threshold | quote }}
+          for: {{ index $alerts.slowDownload "for" | quote }}
+          labels:
+            severity: {{ $alerts.slowDownload.severity | quote }}
+          annotations:
+            summary: Speedtest slow internet download
+            description: Internet download speed is averaging {{ "{{" }} humanize $value {{ "}}" }} Mbps.
+        {{- end }}
+        {{- if $alerts.slowUpload.enabled }}
+        - alert: SpeedtestSlowInternetUpload
+          expr: {{ printf "avg_over_time(speedtest_upload_bits_per_second{job=%q}[%s]) / 1000000 < %v" $job $alerts.slowUpload.window $alerts.slowUpload.threshold | quote }}
+          for: {{ index $alerts.slowUpload "for" | quote }}
+          labels:
+            severity: {{ $alerts.slowUpload.severity | quote }}
+          annotations:
+            summary: Speedtest slow internet upload
+            description: Internet upload speed is averaging {{ "{{" }} humanize $value {{ "}}" }} Mbps.
+        {{- end }}
+        {{- if $alerts.highPingLatency.enabled }}
+        - alert: SpeedtestHighPingLatency
+          expr: {{ printf "avg_over_time(speedtest_ping_latency_milliseconds{job=%q}[%s]) > %v" $job $alerts.highPingLatency.window $alerts.highPingLatency.threshold | quote }}
+          for: {{ index $alerts.highPingLatency "for" | quote }}
+          labels:
+            severity: {{ $alerts.highPingLatency.severity | quote }}
+          annotations:
+            summary: Speedtest high ping latency
+            description: Internet ping latency is averaging {{ "{{" }} humanize $value {{ "}}" }} ms.
+        {{- end }}
+        {{- if $alerts.highJitterLatency.enabled }}
+        - alert: SpeedtestHighJitterLatency
+          expr: {{ printf "avg_over_time(speedtest_jitter_latency_milliseconds{job=%q}[%s]) > %v" $job $alerts.highJitterLatency.window $alerts.highJitterLatency.threshold | quote }}
+          for: {{ index $alerts.highJitterLatency "for" | quote }}
+          labels:
+            severity: {{ $alerts.highJitterLatency.severity | quote }}
+          annotations:
+            summary: Speedtest high jitter latency
+            description: Internet jitter latency is averaging {{ "{{" }} humanize $value {{ "}}" }} ms.
+        {{- end }}
+{{- end }}

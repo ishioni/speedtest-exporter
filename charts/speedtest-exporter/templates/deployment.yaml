@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "speedtest-exporter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "speedtest-exporter.labels" . | nindent 4 }}
+  {{- with .Values.deploymentAnnotations }}
+  annotations:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "speedtest-exporter.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "speedtest-exporter.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+        {{- tpl (toYaml .) $ | nindent 8 }}
+        {{- end }}
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+    spec:
+      enableServiceLinks: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "speedtest-exporter.serviceAccountName" . | quote }}
+      automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      securityContext:
+        {{- tpl (toYaml .Values.podSecurityContext) $ | nindent 8 }}
+      containers:
+        - name: speedtest-exporter
+          image: {{ include "speedtest-exporter.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- tpl (toYaml .Values.securityContext) $ | nindent 12 }}
+          env:
+            - name: SPEEDTEST_PORT
+              value: {{ .Values.service.port | quote }}
+            - name: SPEEDTEST_TIMEOUT
+              value: {{ .Values.config.timeout | quote }}
+            - name: SPEEDTEST_CACHE_FOR
+              value: {{ .Values.config.cacheFor | quote }}
+            - name: SPEEDTEST_LOG_LEVEL
+              value: {{ .Values.config.logLevel | quote }}
+            - name: SPEEDTEST_LOG_FORMAT
+              value: {{ .Values.config.logFormat | quote }}
+            - name: HOME
+              value: /tmp
+            {{- with .Values.config.serverID }}
+            - name: SPEEDTEST_SERVER
+              value: {{ tpl . $ | quote }}
+            {{- end }}
+            {{- with .Values.config.extraEnv }}
+            {{- tpl (toYaml .) $ | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          {{- with .Values.startupProbe }}
+          startupProbe:
+            {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          livenessProbe:
+            {{- tpl (toYaml .Values.livenessProbe) $ | nindent 12 }}
+          readinessProbe:
+            {{- tpl (toYaml .Values.readinessProbe) $ | nindent 12 }}
+          resources:
+            {{- tpl (toYaml .Values.resources) $ | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- tpl (toYaml .) $ | nindent 8 }}
+      {{- end }}
