@@ -11,7 +11,7 @@ helm-docs = "1.14.2"
 lefthook = "2.1.10"
 oxfmt = "0.60.0"
 yq = "4.53.3"
-zizmor = "1.27.0"
+zizmor = "1.28.0"
 
 [tasks.build]
 description = "Compile the exporter"
