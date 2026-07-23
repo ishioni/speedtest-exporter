@@ -1,6 +1,7 @@
 package speedtest
 
 import (
+	"errors"
 	"strings"
 	"testing"
 )
@@ -94,5 +95,18 @@ func TestParseRejectsMissingFields(t *testing.T) {
 	_, err := Parse([]byte(`{"type": "result"}`))
 	if err == nil || !strings.Contains(err.Error(), "server.id") {
 		t.Fatalf("Parse() error = %v, want server.id error", err)
+	}
+}
+
+func TestFailureOutput(t *testing.T) {
+	t.Parallel()
+
+	const output = `{"type":"log","message":"temporary failure"}`
+	err := &outputError{err: errors.New("parse error"), output: output}
+	if got := FailureOutput(err); got != output {
+		t.Fatalf("FailureOutput() = %q, want %q", got, output)
+	}
+	if got := FailureOutput(errors.New("parse error")); got != "" {
+		t.Fatalf("FailureOutput() = %q, want empty output", got)
 	}
 }

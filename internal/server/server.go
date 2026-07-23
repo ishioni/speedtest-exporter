@@ -93,6 +93,9 @@ func (s *Server) routes(metricsHandler http.Handler) http.Handler {
 	mux.Handle("GET /metrics", http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		if err := s.collector.Update(request.Context()); err != nil {
 			s.logger.Error("Speedtest CLI run failed", "error", err)
+			if output := speedtest.FailureOutput(err); output != "" {
+				s.logger.Debug("Speedtest CLI output", "output", output)
+			}
 		}
 		metricsHandler.ServeHTTP(writer, request)
 	}))
