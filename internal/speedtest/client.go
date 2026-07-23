@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os/exec"
 	"strconv"
@@ -48,6 +49,28 @@ type Client struct {
 	serverID string
 }
 
+// outputError preserves unmodified CLI output for debug logging while keeping
+// the normal error message concise.
+type outputError struct {
+	err    error
+	output string
+}
+
+func (e *outputError) Error() string { return e.err.Error() }
+
+func (e *outputError) Unwrap() error { return e.err }
+
+// FailureOutput returns the raw CLI output associated with an execution or
+// parsing failure. It is intended for debug logs only: Speedtest output can
+// include network-identifying information.
+func FailureOutput(err error) string {
+	var outputErr *outputError
+	if errors.As(err, &outputErr) {
+		return outputErr.output
+	}
+	return ""
+}
+
 // NewClient returns a client that invokes binary. serverID is optional.
 func NewClient(binary, serverID string) *Client {
 	return &Client{binary: binary, serverID: serverID}
@@ -74,9 +97,16 @@ func (c *Client) Run(ctx context.Context) (Result, error) {
 
 	output, err := exec.CommandContext(ctx, c.binary, args...).CombinedOutput()
 	if err != nil {
-		return Result{}, fmt.Errorf("run speedtest: %w: %s", err, truncate(strings.TrimSpace(string(output)), 512))
+		return Result{}, &outputError{
+			err:    fmt.Errorf("run speedtest: %w: %s", err, truncate(strings.TrimSpace(string(output)), 512)),
+			output: string(output),
+		}
 	}
-	return Parse(output)
+	result, err := Parse(output)
+	if err != nil {
+		return Result{}, &outputError{err: err, output: string(output)}
+	}
+	return result, nil
 }
 
 // Parse converts the JSON emitted by the official CLI to Prometheus base units.

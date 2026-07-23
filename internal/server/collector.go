@@ -22,31 +22,31 @@ type Collector struct {
 	cacheExpires time.Time
 	currentISP   string
 
-	serverID              prometheus.Gauge
-	jitter                prometheus.Gauge
-	ping                  prometheus.Gauge
-	pingLow               prometheus.Gauge
-	pingHigh              prometheus.Gauge
-	download              prometheus.Gauge
-	downloadBytes         prometheus.Gauge
-	downloadElapsed       prometheus.Gauge
-	downloadLatencyIQM    prometheus.Gauge
-	downloadLatencyLow    prometheus.Gauge
-	downloadLatencyHigh   prometheus.Gauge
-	downloadLatencyJitter prometheus.Gauge
-	upload                prometheus.Gauge
-	uploadBytes           prometheus.Gauge
-	uploadElapsed         prometheus.Gauge
-	uploadLatencyIQM      prometheus.Gauge
-	uploadLatencyLow      prometheus.Gauge
-	uploadLatencyHigh     prometheus.Gauge
-	uploadLatencyJitter   prometheus.Gauge
+	serverID              removableGauge
+	jitter                removableGauge
+	ping                  removableGauge
+	pingLow               removableGauge
+	pingHigh              removableGauge
+	download              removableGauge
+	downloadBytes         removableGauge
+	downloadElapsed       removableGauge
+	downloadLatencyIQM    removableGauge
+	downloadLatencyLow    removableGauge
+	downloadLatencyHigh   removableGauge
+	downloadLatencyJitter removableGauge
+	upload                removableGauge
+	uploadBytes           removableGauge
+	uploadElapsed         removableGauge
+	uploadLatencyIQM      removableGauge
+	uploadLatencyLow      removableGauge
+	uploadLatencyHigh     removableGauge
+	uploadLatencyJitter   removableGauge
 	packetLoss            *prometheus.GaugeVec
 	ispInfo               *prometheus.GaugeVec
 	up                    prometheus.Gauge
 	runTotal              *prometheus.CounterVec
 	duration              prometheus.Histogram
-	lastRun               prometheus.Gauge
+	lastRun               removableGauge
 }
 
 // NewCollector registers the exporter's metrics with registerer.
@@ -60,76 +60,76 @@ func NewCollector(
 		timeout:  timeout,
 		cacheFor: cacheFor,
 		now:      time.Now,
-		serverID: gauge("speedtest_server_id", "Speedtest server ID used by the most recent test."),
-		jitter: gauge(
+		serverID: newRemovableGauge("speedtest_server_id", "Speedtest server ID used by the most recent successful test."),
+		jitter: newRemovableGauge(
 			"speedtest_jitter_latency_milliseconds",
 			"Jitter from the most recent Speedtest measurement in milliseconds.",
 		),
-		ping: gauge(
+		ping: newRemovableGauge(
 			"speedtest_ping_latency_milliseconds",
 			"Ping latency from the most recent Speedtest measurement in milliseconds.",
 		),
-		pingLow: gauge(
+		pingLow: newRemovableGauge(
 			"speedtest_ping_low_latency_milliseconds",
 			"Lowest ping latency from the most recent Speedtest measurement in milliseconds.",
 		),
-		pingHigh: gauge(
+		pingHigh: newRemovableGauge(
 			"speedtest_ping_high_latency_milliseconds",
 			"Highest ping latency from the most recent Speedtest measurement in milliseconds.",
 		),
-		download: gauge(
+		download: newRemovableGauge(
 			"speedtest_download_bits_per_second",
 			"Download bandwidth from the most recent Speedtest measurement in bits per second.",
 		),
-		downloadBytes: gauge(
+		downloadBytes: newRemovableGauge(
 			"speedtest_download_bytes",
 			"Bytes transferred during the most recent Speedtest download phase.",
 		),
-		downloadElapsed: gauge(
+		downloadElapsed: newRemovableGauge(
 			"speedtest_download_elapsed_seconds",
 			"Elapsed time of the most recent Speedtest download phase in seconds.",
 		),
-		downloadLatencyIQM: gauge(
+		downloadLatencyIQM: newRemovableGauge(
 			"speedtest_download_latency_iqm_milliseconds",
 			"Interquartile mean latency during the most recent Speedtest download phase in milliseconds.",
 		),
-		downloadLatencyLow: gauge(
+		downloadLatencyLow: newRemovableGauge(
 			"speedtest_download_latency_low_milliseconds",
 			"Lowest latency during the most recent Speedtest download phase in milliseconds.",
 		),
-		downloadLatencyHigh: gauge(
+		downloadLatencyHigh: newRemovableGauge(
 			"speedtest_download_latency_high_milliseconds",
 			"Highest latency during the most recent Speedtest download phase in milliseconds.",
 		),
-		downloadLatencyJitter: gauge(
+		downloadLatencyJitter: newRemovableGauge(
 			"speedtest_download_latency_jitter_milliseconds",
 			"Jitter during the most recent Speedtest download phase in milliseconds.",
 		),
-		upload: gauge(
+		upload: newRemovableGauge(
 			"speedtest_upload_bits_per_second",
 			"Upload bandwidth from the most recent Speedtest measurement in bits per second.",
 		),
-		uploadBytes: gauge(
+		uploadBytes: newRemovableGauge(
 			"speedtest_upload_bytes",
 			"Bytes transferred during the most recent Speedtest upload phase.",
 		),
-		uploadElapsed: gauge(
+		uploadElapsed: newRemovableGauge(
 			"speedtest_upload_elapsed_seconds",
 			"Elapsed time of the most recent Speedtest upload phase in seconds.",
 		),
-		uploadLatencyIQM: gauge(
+		uploadLatencyIQM: newRemovableGauge(
 			"speedtest_upload_latency_iqm_milliseconds",
 			"Interquartile mean latency during the most recent Speedtest upload phase in milliseconds.",
 		),
-		uploadLatencyLow: gauge(
+		uploadLatencyLow: newRemovableGauge(
 			"speedtest_upload_latency_low_milliseconds",
 			"Lowest latency during the most recent Speedtest upload phase in milliseconds.",
 		),
-		uploadLatencyHigh: gauge(
+		uploadLatencyHigh: newRemovableGauge(
 			"speedtest_upload_latency_high_milliseconds",
 			"Highest latency during the most recent Speedtest upload phase in milliseconds.",
 		),
-		uploadLatencyJitter: gauge(
+		uploadLatencyJitter: newRemovableGauge(
 			"speedtest_upload_latency_jitter_milliseconds",
 			"Jitter during the most recent Speedtest upload phase in milliseconds.",
 		),
@@ -141,10 +141,10 @@ func NewCollector(
 			Name: "speedtest_isp_info",
 			Help: "Internet service provider reported by the most recent successful Speedtest measurement.",
 		}, []string{"isp"}),
-		up: gauge(
-			"speedtest_up",
-			"Whether the most recent Speedtest measurement succeeded (1) or failed (0).",
-		),
+		up: prometheus.NewGauge(prometheus.GaugeOpts{
+			Name: "speedtest_up",
+			Help: "Whether the most recent Speedtest measurement succeeded (1) or failed (0).",
+		}),
 		runTotal: prometheus.NewCounterVec(prometheus.CounterOpts{
 			Name: "speedtest_runs_total",
 			Help: "Total Speedtest CLI runs, partitioned by outcome.",
@@ -154,9 +154,9 @@ func NewCollector(
 			Help:    "Wall-clock duration of a Speedtest CLI run.",
 			Buckets: []float64{5, 15, 30, 60, 90, 120, 180},
 		}),
-		lastRun: gauge(
+		lastRun: newRemovableGauge(
 			"speedtest_last_run_timestamp_seconds",
-			"Unix timestamp when the most recent Speedtest CLI run completed.",
+			"Unix timestamp when the most recent successful Speedtest run completed.",
 		),
 	}
 	registerer.MustRegister(
@@ -189,13 +189,25 @@ func NewCollector(
 	return collector
 }
 
-func gauge(name, help string) prometheus.Gauge {
-	return prometheus.NewGauge(prometheus.GaugeOpts{Name: name, Help: help})
+type removableGauge struct {
+	*prometheus.GaugeVec
 }
 
-// Update ensures metrics contain a fresh measurement. Failures are reflected in
-// speedtest_up and still leave the scrape itself successful, so Prometheus can
-// alert on the measurement rather than an inaccessible target.
+func newRemovableGauge(name, help string) removableGauge {
+	return removableGauge{GaugeVec: prometheus.NewGaugeVec(prometheus.GaugeOpts{Name: name, Help: help}, nil)}
+}
+
+func (g removableGauge) Set(value float64) {
+	g.WithLabelValues().Set(value)
+}
+
+func (g removableGauge) Delete() {
+	g.DeleteLabelValues()
+}
+
+// Update ensures metrics contain a fresh measurement. Failures leave the
+// scrape itself successful but omit invalid measurement samples and set
+// speedtest_up to zero, allowing Prometheus to alert on the measurement.
 func (c *Collector) Update(ctx context.Context) error {
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -211,7 +223,6 @@ func (c *Collector) Update(ctx context.Context) error {
 	result, err := c.runner.Run(runCtx)
 	completed := c.now()
 	c.duration.Observe(completed.Sub(started).Seconds())
-	c.lastRun.Set(float64(completed.UnixNano()) / float64(time.Second))
 	c.hasResult = true
 	c.cacheExpires = completed.Add(c.cacheFor)
 
@@ -220,6 +231,7 @@ func (c *Collector) Update(ctx context.Context) error {
 		c.runTotal.WithLabelValues("error").Inc()
 		return err
 	}
+	c.lastRun.Set(float64(completed.UnixNano()) / float64(time.Second))
 	c.setResult(result)
 	c.runTotal.WithLabelValues("success").Inc()
 	return nil
@@ -266,25 +278,30 @@ func (c *Collector) setISP(isp string) {
 }
 
 func (c *Collector) setFailure() {
-	c.serverID.Set(0)
-	c.jitter.Set(0)
-	c.ping.Set(0)
-	c.pingLow.Set(0)
-	c.pingHigh.Set(0)
-	c.download.Set(0)
-	c.downloadBytes.Set(0)
-	c.downloadElapsed.Set(0)
-	c.downloadLatencyIQM.Set(0)
-	c.downloadLatencyLow.Set(0)
-	c.downloadLatencyHigh.Set(0)
-	c.downloadLatencyJitter.Set(0)
-	c.upload.Set(0)
-	c.uploadBytes.Set(0)
-	c.uploadElapsed.Set(0)
-	c.uploadLatencyIQM.Set(0)
-	c.uploadLatencyLow.Set(0)
-	c.uploadLatencyHigh.Set(0)
-	c.uploadLatencyJitter.Set(0)
+	c.serverID.Delete()
+	c.jitter.Delete()
+	c.ping.Delete()
+	c.pingLow.Delete()
+	c.pingHigh.Delete()
+	c.download.Delete()
+	c.downloadBytes.Delete()
+	c.downloadElapsed.Delete()
+	c.downloadLatencyIQM.Delete()
+	c.downloadLatencyLow.Delete()
+	c.downloadLatencyHigh.Delete()
+	c.downloadLatencyJitter.Delete()
+	c.upload.Delete()
+	c.uploadBytes.Delete()
+	c.uploadElapsed.Delete()
+	c.uploadLatencyIQM.Delete()
+	c.uploadLatencyLow.Delete()
+	c.uploadLatencyHigh.Delete()
+	c.uploadLatencyJitter.Delete()
+	c.lastRun.Delete()
 	c.packetLoss.DeleteLabelValues()
+	if c.currentISP != "" {
+		c.ispInfo.DeleteLabelValues(c.currentISP)
+		c.currentISP = ""
+	}
 	c.up.Set(0)
 }

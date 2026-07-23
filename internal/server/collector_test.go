@@ -108,10 +108,23 @@ func TestCollectorExposesFailure(t *testing.T) {
 
 	registry := prometheus.NewRegistry()
 	collector := NewCollector(&fakeRunner{err: errors.New("unavailable")}, time.Second, 0, registry)
+	collector.setResult(speedtest.Result{DownloadBitsPerSec: 100, ISP: "Provider A"})
+	collector.lastRun.Set(42)
 	if err := collector.Update(context.Background()); err == nil {
 		t.Fatal("Update() error = nil, want runner error")
 	}
 	if got := testutil.ToFloat64(collector.up); got != 0 {
 		t.Fatalf("speedtest_up = %v, want 0", got)
+	}
+
+	families, err := registry.Gather()
+	if err != nil {
+		t.Fatalf("Gather() error = %v", err)
+	}
+	for _, family := range families {
+		switch family.GetName() {
+		case "speedtest_download_bits_per_second", "speedtest_isp_info", "speedtest_last_run_timestamp_seconds":
+			t.Fatalf("%s must be omitted for a failed run", family.GetName())
+		}
 	}
 }
