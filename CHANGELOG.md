@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.2](https://github.com/ishioni/speedtest-exporter/compare/0.2.1...0.2.2) (2026-07-23)
+
+
+### Features
+
+* **deps:** update module github.com/prometheus/client_golang (v1.23.2 → v1.24.0) ([#18](https://github.com/ishioni/speedtest-exporter/issues/18)) ([a6c8804](https://github.com/ishioni/speedtest-exporter/commit/a6c8804dcf7bd3139df328dfa0e4be09887c62b1))
+
+
+### Bug Fixes
+
+* **container:** update image grafana/grafana (13.1.0 → 13.1.1) ([#10](https://github.com/ishioni/speedtest-exporter/issues/10)) ([dfd67ae](https://github.com/ishioni/speedtest-exporter/commit/dfd67ae97aae6a763d074b26e63fe871d60e01e3))
+* omit invalid speedtest measurements ([#22](https://github.com/ishioni/speedtest-exporter/issues/22)) ([0e471f8](https://github.com/ishioni/speedtest-exporter/commit/0e471f834ab278ba4a256f0ff393905c022db339))
+
 ## [0.2.1](https://github.com/ishioni/speedtest-exporter/compare/0.2.0...0.2.1) (2026-07-18)
 
 
