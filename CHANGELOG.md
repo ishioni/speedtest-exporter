@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.3](https://github.com/ishioni/speedtest-exporter/compare/0.2.2...0.2.3) (2026-07-31)
+
+
+### Bug Fixes
+
+* accept speedtest retry logs ([#29](https://github.com/ishioni/speedtest-exporter/issues/29)) ([8929a94](https://github.com/ishioni/speedtest-exporter/commit/8929a943170a8eeeffe6065619a0120c49264f8c))
+* **container:** update image prom/prometheus (v3.13.1 → v3.13.2) ([#27](https://github.com/ishioni/speedtest-exporter/issues/27)) ([679da31](https://github.com/ishioni/speedtest-exporter/commit/679da31338da6f9c21a85ed4e0e845f61b790e59))
+* **deps:** update module github.com/prometheus/client_golang (v1.24.0 → v1.24.1) ([#23](https://github.com/ishioni/speedtest-exporter/issues/23)) ([4e875f6](https://github.com/ishioni/speedtest-exporter/commit/4e875f64d7cc0031755ca5128e5e07c29829f19b))
+
 ## [0.2.2](https://github.com/ishioni/speedtest-exporter/compare/0.2.1...0.2.2) (2026-07-23)
 
 
