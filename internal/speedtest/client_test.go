@@ -80,6 +80,18 @@ func TestParseAcceptsLeadingCLINotices(t *testing.T) {
 	}
 }
 
+func TestParseSkipsLogRecordsBeforeResult(t *testing.T) {
+	t.Parallel()
+
+	result, err := Parse([]byte(`{"type":"log","message":"Timeout occurred in connect."}` + "\n" + completeResult))
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+	if result.ServerID != 12345 || result.DownloadBitsPerSec != 100000000 {
+		t.Fatalf("Parse() result = %#v", result)
+	}
+}
+
 func TestParseRejectsCLIError(t *testing.T) {
 	t.Parallel()
 
