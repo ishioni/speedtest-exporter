@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -113,23 +114,39 @@ func (c *Client) Run(ctx context.Context) (Result, error) {
 func Parse(output []byte) (Result, error) {
 	// On a fresh HOME directory, the official CLI writes license/GDPR acceptance
 	// notices before the JSON result despite --accept-license/--accept-gdpr.
-	// Decode from the first JSON object instead of assuming stdout is JSON-only.
+	// Decode all JSON objects after the first one: a retry can emit a log record
+	// before the successful result.
 	jsonStart := bytes.IndexByte(output, '{')
 	if jsonStart < 0 {
 		return Result{}, fmt.Errorf("speedtest output did not contain a JSON result")
 	}
 
-	var raw cliResult
 	decoder := json.NewDecoder(bytes.NewReader(output[jsonStart:]))
 	decoder.UseNumber()
-	if err := decoder.Decode(&raw); err != nil {
-		return Result{}, fmt.Errorf("decode speedtest JSON: %w", err)
+	for {
+		var raw cliResult
+		if err := decoder.Decode(&raw); err != nil {
+			if errors.Is(err, io.EOF) {
+				break
+			}
+			return Result{}, fmt.Errorf("decode speedtest JSON: %w", err)
+		}
+		switch raw.Type {
+		case "log":
+			continue
+		case "", "result":
+			return parseResult(raw)
+		default:
+			return Result{}, fmt.Errorf("unexpected speedtest JSON type %q", raw.Type)
+		}
 	}
+
+	return Result{}, fmt.Errorf("speedtest output did not contain a JSON result")
+}
+
+func parseResult(raw cliResult) (Result, error) {
 	if len(raw.Error) > 0 && string(raw.Error) != "null" && string(raw.Error) != `""` {
 		return Result{}, fmt.Errorf("speedtest reported an error: %s", truncate(string(raw.Error), 256))
-	}
-	if raw.Type != "" && raw.Type != "result" {
-		return Result{}, fmt.Errorf("unexpected speedtest JSON type %q", raw.Type)
 	}
 
 	serverID, err := parseNumber(raw.Server.ID)
