@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.4](https://github.com/ishioni/speedtest-exporter/compare/0.2.3...0.2.4) (2026-08-08)
+
+
+### Bug Fixes
+
+* **container:** update image grafana/grafana (13.1.1 → 13.1.2) ([#33](https://github.com/ishioni/speedtest-exporter/issues/33)) ([381755a](https://github.com/ishioni/speedtest-exporter/commit/381755a0ac9f0a69d9c117e36d40fe110458e05d))
+* **container:** update image grafana/grafana (13.1.2 → 13.1.3) ([#35](https://github.com/ishioni/speedtest-exporter/issues/35)) ([b56bf02](https://github.com/ishioni/speedtest-exporter/commit/b56bf0294c73b863f08a9dd84ac2d3b999a5a964))
+
 ## [0.2.3](https://github.com/ishioni/speedtest-exporter/compare/0.2.2...0.2.3) (2026-07-31)
 
 
