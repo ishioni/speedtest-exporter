@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG GO_VERSION=1.26.5
+ARG GO_VERSION
 ARG SPEEDTEST_VERSION=1.2.0
 
 # Download the vendor-supplied Speedtest CLI for the image target architecture.
