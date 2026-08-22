@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.2.5](https://github.com/ishioni/speedtest-exporter/compare/0.2.4...0.2.5) (2026-08-22)
+
+
+### Features
+
+* **container:** update image grafana/grafana (13.1.3 → 13.2.0) ([#45](https://github.com/ishioni/speedtest-exporter/issues/45)) ([cfc5221](https://github.com/ishioni/speedtest-exporter/commit/cfc52214a9a733f3974d1024c864ebd7c7130503))
+* **container:** update image prom/prometheus (v3.13.2 → v3.14.0) ([#44](https://github.com/ishioni/speedtest-exporter/issues/44)) ([c18a3ca](https://github.com/ishioni/speedtest-exporter/commit/c18a3ca4f24d54a9081c1cc8215b3fccac9c2134))
+* **mise:** update tool go (1.26.6 → 1.27.0) ([#50](https://github.com/ishioni/speedtest-exporter/issues/50)) ([a122218](https://github.com/ishioni/speedtest-exporter/commit/a12221859f9d1d563f34f90fa8a400d03de5ac98))
+
+
+### Bug Fixes
+
+* **ci:** add node to mise ([ba6bae7](https://github.com/ishioni/speedtest-exporter/commit/ba6bae7d05a7711628cf7e742bbd69576a79cc36))
+* **renovate:** bump Go module minor versions ([#51](https://github.com/ishioni/speedtest-exporter/issues/51)) ([c4d967a](https://github.com/ishioni/speedtest-exporter/commit/c4d967ae2771dc8e73f0ae20d84d39f66a9c9629))
+
+
+### Miscellaneous Chores
+
+* **ci:** update release-please config ([1f8adeb](https://github.com/ishioni/speedtest-exporter/commit/1f8adebcc000451cca9e2a0e1cd9a44e4af71525))
+* **github-action:** update action docker/github-builder (v1.16.0 → v1.17.0) ([#49](https://github.com/ishioni/speedtest-exporter/issues/49)) ([be3695a](https://github.com/ishioni/speedtest-exporter/commit/be3695a841fe97c0263581422e32ba4fa919159a))
+* **mise:** update mise tools ([#52](https://github.com/ishioni/speedtest-exporter/issues/52)) ([219d5bd](https://github.com/ishioni/speedtest-exporter/commit/219d5bda42e8b1acc3b2cf0832039ebc052d4eaf))
+* **mise:** update tool oxfmt (0.63.0 → 0.64.0) ([#46](https://github.com/ishioni/speedtest-exporter/issues/46)) ([f20a316](https://github.com/ishioni/speedtest-exporter/commit/f20a316bee2342ef998ed5c234c89c32e06b75a6))
+* **mise:** update tool yq (4.53.3 → 4.53.4) ([#48](https://github.com/ishioni/speedtest-exporter/issues/48)) ([de18c15](https://github.com/ishioni/speedtest-exporter/commit/de18c150c54c169db74dcc55b2600632589de364))
+* run go fix with Go 1.27 ([#53](https://github.com/ishioni/speedtest-exporter/issues/53)) ([a739cbb](https://github.com/ishioni/speedtest-exporter/commit/a739cbba2fed6240b4b1376ea827229ac1833163))
+
 ## [0.2.4](https://github.com/ishioni/speedtest-exporter/compare/0.2.3...0.2.4) (2026-08-14)
 
 
