@@ -65,8 +65,7 @@ func (e *outputError) Unwrap() error { return e.err }
 // parsing failure. It is intended for debug logs only: Speedtest output can
 // include network-identifying information.
 func FailureOutput(err error) string {
-	var outputErr *outputError
-	if errors.As(err, &outputErr) {
+	if outputErr, ok := errors.AsType[*outputError](err); ok {
 		return outputErr.output
 	}
 	return ""
