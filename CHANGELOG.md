@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.5](https://github.com/ishioni/speedtest-exporter/compare/0.2.4...0.2.5) (2026-08-22)
+
+
+### Features
+
+* **container:** update image grafana/grafana (13.1.3 → 13.2.0) ([#45](https://github.com/ishioni/speedtest-exporter/issues/45)) ([cfc5221](https://github.com/ishioni/speedtest-exporter/commit/cfc52214a9a733f3974d1024c864ebd7c7130503))
+* **container:** update image prom/prometheus (v3.13.2 → v3.14.0) ([#44](https://github.com/ishioni/speedtest-exporter/issues/44)) ([c18a3ca](https://github.com/ishioni/speedtest-exporter/commit/c18a3ca4f24d54a9081c1cc8215b3fccac9c2134))
+
+
+### Bug Fixes
+
+* **renovate:** bump Go module minor versions ([#51](https://github.com/ishioni/speedtest-exporter/issues/51)) ([c4d967a](https://github.com/ishioni/speedtest-exporter/commit/c4d967ae2771dc8e73f0ae20d84d39f66a9c9629))
+
 ## [0.2.4](https://github.com/ishioni/speedtest-exporter/compare/0.2.3...0.2.4) (2026-08-14)
 
 
