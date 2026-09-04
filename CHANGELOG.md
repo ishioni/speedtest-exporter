@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.6](https://github.com/ishioni/speedtest-exporter/compare/0.2.5...0.2.6) (2026-09-04)
+
+
+### Miscellaneous Chores
+
+* **github-release:** update release dadav/helm-schema (0.23.4 → 0.23.5) ([#54](https://github.com/ishioni/speedtest-exporter/issues/54)) ([5686ce5](https://github.com/ishioni/speedtest-exporter/commit/5686ce572f66c1d357ac271a4ffc080cbe056b5a))
+* **mise:** update tool aqua:dadav/helm-schema (0.23.4 → 0.23.5) ([#58](https://github.com/ishioni/speedtest-exporter/issues/58)) ([7309252](https://github.com/ishioni/speedtest-exporter/commit/7309252af9970b7d1665e828d9cc5b20d7702c73))
+* **mise:** update tool lefthook (2.1.10 → 2.1.11) ([#55](https://github.com/ishioni/speedtest-exporter/issues/55)) ([06ca7b7](https://github.com/ishioni/speedtest-exporter/commit/06ca7b77f7de484ee2416803f117e976cb68ecdd))
+* **mise:** update tool oxfmt (0.64.0 → 0.65.0) ([#59](https://github.com/ishioni/speedtest-exporter/issues/59)) ([e8da6ac](https://github.com/ishioni/speedtest-exporter/commit/e8da6acfc1cf0d4d17356f3bcdb1496fd1ab34b8))
+* **mise:** update tool oxfmt (0.65.0 → 0.66.0) ([#65](https://github.com/ishioni/speedtest-exporter/issues/65)) ([c03a0c7](https://github.com/ishioni/speedtest-exporter/commit/c03a0c713fa0fe86c3f5adb7338eafcf6072a6e5))
+
 ## [0.2.5](https://github.com/ishioni/speedtest-exporter/compare/0.2.4...0.2.5) (2026-08-22)
 
 
