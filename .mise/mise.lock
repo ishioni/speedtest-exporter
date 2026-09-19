@@ -164,36 +164,36 @@ url_api = "https://api.github.com/repos/golangci/golangci-lint/releases/assets/5
 provenance = "github-attestations"
 
 [[tools.helm]]
-version = "4.2.4"
+version = "4.3.0"
 backend = "aqua:helm/helm"
 
 [tools.helm."platforms.linux-arm64"]
-checksum = "sha256:564de2191b881e9f71b5606b25345821ea1682f06ab90499d3ab22b530176da1"
-url = "https://get.helm.sh/helm-v4.2.4-linux-arm64.tar.gz"
+checksum = "sha256:31c5794dd55c66a51e6b7d2e2ac7a114ae8b1de41ff1d9ba51748ac973b06a08"
+url = "https://get.helm.sh/helm-v4.3.0-linux-arm64.tar.gz"
 
 [tools.helm."platforms.linux-arm64-musl"]
-checksum = "sha256:564de2191b881e9f71b5606b25345821ea1682f06ab90499d3ab22b530176da1"
-url = "https://get.helm.sh/helm-v4.2.4-linux-arm64.tar.gz"
+checksum = "sha256:31c5794dd55c66a51e6b7d2e2ac7a114ae8b1de41ff1d9ba51748ac973b06a08"
+url = "https://get.helm.sh/helm-v4.3.0-linux-arm64.tar.gz"
 
 [tools.helm."platforms.linux-x64"]
-checksum = "sha256:c306b46f719b0a4da32d0f78ee21bf90ce8d602f15b22ab753f0674d1670a7f3"
-url = "https://get.helm.sh/helm-v4.2.4-linux-amd64.tar.gz"
+checksum = "sha256:86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb"
+url = "https://get.helm.sh/helm-v4.3.0-linux-amd64.tar.gz"
 
 [tools.helm."platforms.linux-x64-musl"]
-checksum = "sha256:c306b46f719b0a4da32d0f78ee21bf90ce8d602f15b22ab753f0674d1670a7f3"
-url = "https://get.helm.sh/helm-v4.2.4-linux-amd64.tar.gz"
+checksum = "sha256:86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb"
+url = "https://get.helm.sh/helm-v4.3.0-linux-amd64.tar.gz"
 
 [tools.helm."platforms.macos-arm64"]
-checksum = "sha256:d747eb4e28bd2727173d15b759fa0a17822291ec09db7ced3d55af290a3661a2"
-url = "https://get.helm.sh/helm-v4.2.4-darwin-arm64.tar.gz"
+checksum = "sha256:d3870437e1e95b67f8edbde964156c84a26503f560821d40c542441658934fba"
+url = "https://get.helm.sh/helm-v4.3.0-darwin-arm64.tar.gz"
 
 [tools.helm."platforms.macos-x64"]
-checksum = "sha256:6c163d687ca03c3b5c01928e53bbbcf9518278f47ce7a2f249a5a08e8bdaa2bc"
-url = "https://get.helm.sh/helm-v4.2.4-darwin-amd64.tar.gz"
+checksum = "sha256:347a784877e0e20eac865e8d1c36a80f6bb0861d6f29abd34defb6570ef95d92"
+url = "https://get.helm.sh/helm-v4.3.0-darwin-amd64.tar.gz"
 
 [tools.helm."platforms.windows-x64"]
-checksum = "sha256:38cbdab1c7d4f0412d571c3aeefc700bcdc7b663be481832a11dfed01ee67c36"
-url = "https://get.helm.sh/helm-v4.2.4-windows-amd64.tar.gz"
+checksum = "sha256:551b0065fdfae8ba74ddac3a213e46e0144188cacf997ae1002f508af169728e"
+url = "https://get.helm.sh/helm-v4.3.0-windows-amd64.tar.gz"
 
 [[tools.helm-docs]]
 version = "1.14.2"
@@ -235,49 +235,49 @@ url = "https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs
 url_api = "https://api.github.com/repos/norwoodj/helm-docs/releases/assets/178327219"
 
 [[tools.lefthook]]
-version = "2.1.12"
+version = "2.1.14"
 backend = "aqua:evilmartians/lefthook"
 
 [tools.lefthook."platforms.linux-arm64"]
-checksum = "sha256:d96ac16753f6d3d69b92098621c2a2427522a9c2c3e78cd7c9b4a9790b0b8f17"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_Linux_aarch64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627819"
+checksum = "sha256:2fd4b1f33aab4e4c8691a1a6a750b0638a40bdef871234cacb33781615dbf7ba"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_aarch64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149908"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-arm64-musl"]
-checksum = "sha256:d96ac16753f6d3d69b92098621c2a2427522a9c2c3e78cd7c9b4a9790b0b8f17"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_Linux_aarch64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627819"
+checksum = "sha256:2fd4b1f33aab4e4c8691a1a6a750b0638a40bdef871234cacb33781615dbf7ba"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_aarch64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149908"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-x64"]
-checksum = "sha256:dad908593c859d139b886c14913a44401d95288aa7642d9bdf6f3bd36bd788ff"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_Linux_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627780"
+checksum = "sha256:2be3187101b3a2edd5edf8b546aa2e3820531c517b4cd0216601a9c06f07c42d"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149839"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.linux-x64-musl"]
-checksum = "sha256:dad908593c859d139b886c14913a44401d95288aa7642d9bdf6f3bd36bd788ff"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_Linux_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627780"
+checksum = "sha256:2be3187101b3a2edd5edf8b546aa2e3820531c517b4cd0216601a9c06f07c42d"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Linux_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149839"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.macos-arm64"]
-checksum = "sha256:f23eac328ca50c7b775dc24dc275cdeacb65e16cf8bd1745d18e3c563f704f94"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_MacOS_arm64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627758"
+checksum = "sha256:398e6a23dfe2de3fc113e091dd4b592795cc8f1665acf5501856858b8056d686"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_MacOS_arm64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149840"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.macos-x64"]
-checksum = "sha256:83c8591d338b1b789944480d9effe2807adc903cf27e4a16ab013e39d7723c31"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_MacOS_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627775"
+checksum = "sha256:9e304cad12b3785bf45ba6085fa6a91ed45f6ff6e7dabd50cb6834959caef06a"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_MacOS_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149898"
 provenance = "github-attestations"
 
 [tools.lefthook."platforms.windows-x64"]
-checksum = "sha256:c642d9ad8818faff1379e1b72321b4baddd0d6f20ffd7303f59386bb6abfd6e9"
-url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.12/lefthook_2.1.12_Windows_x86_64.gz"
-url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/533627801"
+checksum = "sha256:61a0f47c75c741fa2788aff55f85dfa0a34307257b176cb6b20fd821ae030454"
+url = "https://github.com/evilmartians/lefthook/releases/download/v2.1.14/lefthook_2.1.14_Windows_x86_64.gz"
+url_api = "https://api.github.com/repos/evilmartians/lefthook/releases/assets/563149872"
 provenance = "github-attestations"
 
 [[tools.node]]
