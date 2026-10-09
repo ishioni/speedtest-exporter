@@ -10,7 +10,7 @@ helm-docs = "1.14.2"
 "aqua:dadav/helm-schema" = "0.23.5"
 lefthook = "2.1.17"
 node = "24.21.0"
-oxfmt = "0.71.0"
+oxfmt = "0.72.0"
 yq = "4.54.1"
 zizmor = "1.30.1"
 
