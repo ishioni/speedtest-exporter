@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.8](https://github.com/ishioni/speedtest-exporter/compare/0.2.7...0.2.8) (2026-10-23)
+
+
+### Miscellaneous Chores
+
+* **mise:** update tool cosign (3.1.3 → 3.1.4) ([#108](https://github.com/ishioni/speedtest-exporter/issues/108)) ([304bb27](https://github.com/ishioni/speedtest-exporter/commit/304bb279c7ab4c2a8a53dd955bf80e0367f03b92))
+
 ## [0.2.7](https://github.com/ishioni/speedtest-exporter/compare/0.2.6...0.2.7) (2026-10-23)
 
 
