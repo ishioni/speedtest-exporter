@@ -1,5 +1,60 @@
 # Changelog
 
+## [0.2.7](https://github.com/ishioni/speedtest-exporter/compare/0.2.6...0.2.7) (2026-10-23)
+
+
+### Features
+
+* **container:** update image curlimages/curl (8.22.0 → 8.23.0) ([#100](https://github.com/ishioni/speedtest-exporter/issues/100)) ([fb76a7c](https://github.com/ishioni/speedtest-exporter/commit/fb76a7c4ea7b7e1e6d2a5c101058a8036f504487))
+* **container:** update image prom/prometheus (v3.14.0 → v3.15.0) ([#77](https://github.com/ishioni/speedtest-exporter/issues/77)) ([39a48d8](https://github.com/ishioni/speedtest-exporter/commit/39a48d8b6ea7fcd4be62e23a57b8ae182e1d74e6))
+* **go:** update module github.com/prometheus/client_golang (v1.24.1 → v1.25.0) ([#92](https://github.com/ishioni/speedtest-exporter/issues/92)) ([54fe53b](https://github.com/ishioni/speedtest-exporter/commit/54fe53bdf6d153396f5329090c2629fea34e5477))
+
+
+### Bug Fixes
+
+* **container:** update image grafana/grafana (13.2.1 → 13.2.2) ([#73](https://github.com/ishioni/speedtest-exporter/issues/73)) ([539806f](https://github.com/ishioni/speedtest-exporter/commit/539806f3c9f4c56759c222358bfcd471211730fc))
+* **container:** update image grafana/grafana (13.2.2 → 13.2.3) ([#80](https://github.com/ishioni/speedtest-exporter/issues/80)) ([1614080](https://github.com/ishioni/speedtest-exporter/commit/161408036f19a76d4534689e1df6f4ea03f402b0))
+* **container:** update image grafana/grafana (13.2.3 → 13.2.4) ([#93](https://github.com/ishioni/speedtest-exporter/issues/93)) ([5e07702](https://github.com/ishioni/speedtest-exporter/commit/5e07702fdea1ae64c37149f13a1f6bef4a869450))
+* **container:** update image prom/prometheus (v3.15.0 → v3.15.1) ([#101](https://github.com/ishioni/speedtest-exporter/issues/101)) ([f484f21](https://github.com/ishioni/speedtest-exporter/commit/f484f215b1204fb1df6ebf2d470b398f26bfe00c))
+* **go:** update module go (1.27.2 → 1.27.3) ([#103](https://github.com/ishioni/speedtest-exporter/issues/103)) ([de0d537](https://github.com/ishioni/speedtest-exporter/commit/de0d537237e7b893f67aa8446e411233975fff09))
+* **mise:** update tool go (1.27.1 → 1.27.2) ([#90](https://github.com/ishioni/speedtest-exporter/issues/90)) ([83ed303](https://github.com/ishioni/speedtest-exporter/commit/83ed3035d6916193ceba0ddcffe5a782774ee7b4))
+
+
+### Miscellaneous Chores
+
+* **github-action:** update action jdx/mise-action (v5.1.2 → v5.2.0) ([#97](https://github.com/ishioni/speedtest-exporter/issues/97)) ([754fb1f](https://github.com/ishioni/speedtest-exporter/commit/754fb1fed1b80aa3aac6c926a95e2a8cc8ffa454))
+* **github-action:** update action renovatebot/github-action (v46.2.5 → v46.2.6) ([#67](https://github.com/ishioni/speedtest-exporter/issues/67)) ([6d0e59e](https://github.com/ishioni/speedtest-exporter/commit/6d0e59e2a85dcfa7bc8cb7c24163300888760fc9))
+* **github-action:** update action renovatebot/github-action (v46.2.6 → v46.3.3) ([#72](https://github.com/ishioni/speedtest-exporter/issues/72)) ([2713867](https://github.com/ishioni/speedtest-exporter/commit/27138670c410ba0dbfb50f7655aaeb2066f87b1a))
+* **github-action:** update action renovatebot/github-action (v46.3.3 → v46.3.4) ([#79](https://github.com/ishioni/speedtest-exporter/issues/79)) ([1d774fe](https://github.com/ishioni/speedtest-exporter/commit/1d774feab9bec55cf8c1045b722c5594e0a8f765))
+* **github-action:** update action renovatebot/github-action (v46.3.4 → v46.3.5) ([#81](https://github.com/ishioni/speedtest-exporter/issues/81)) ([016c5a2](https://github.com/ishioni/speedtest-exporter/commit/016c5a23ded4b08c6a9566f194fbca341a6260a5))
+* **github-action:** update action renovatebot/github-action (v46.3.5 → v46.3.6) ([#84](https://github.com/ishioni/speedtest-exporter/issues/84)) ([14e8eeb](https://github.com/ishioni/speedtest-exporter/commit/14e8eeb8b72cb8787c4a2dc69dc7cddd7813f364))
+* **github-action:** update action renovatebot/github-action (v46.3.6 → v46.3.7) ([#87](https://github.com/ishioni/speedtest-exporter/issues/87)) ([3a83445](https://github.com/ishioni/speedtest-exporter/commit/3a83445a435449a464f93e27cb13cdff725b0967))
+* **github-action:** update github-actions ([#104](https://github.com/ishioni/speedtest-exporter/issues/104)) ([6b8f23f](https://github.com/ishioni/speedtest-exporter/commit/6b8f23f35b9c8b3f20afa97f01e8a94f2520e726))
+* **github-action:** update github-actions ([#75](https://github.com/ishioni/speedtest-exporter/issues/75)) ([f4cc5b3](https://github.com/ishioni/speedtest-exporter/commit/f4cc5b3ad39b210547d90fdc788e1304b2288429))
+* **github-action:** update github-actions ([#94](https://github.com/ishioni/speedtest-exporter/issues/94)) ([5189aad](https://github.com/ishioni/speedtest-exporter/commit/5189aadbfc8c19e0e272582bca971ddc52aa1d77))
+* **github-release:** update release dadav/helm-schema (0.23.5 → 0.24.0) ([#96](https://github.com/ishioni/speedtest-exporter/issues/96)) ([0baac9e](https://github.com/ishioni/speedtest-exporter/commit/0baac9e3ae7d82fe5fab5b57c53581f6383de255))
+* **mise:** update mise tools ([#71](https://github.com/ishioni/speedtest-exporter/issues/71)) ([45f7696](https://github.com/ishioni/speedtest-exporter/commit/45f7696550d408a238068789698f2818919886c7))
+* **mise:** update mise tools ([#95](https://github.com/ishioni/speedtest-exporter/issues/95)) ([6c46b8c](https://github.com/ishioni/speedtest-exporter/commit/6c46b8c17374689d7be9f7de0f4e8771e6d14604))
+* **mise:** update tool aqua:dadav/helm-schema (0.23.5 → 0.24.0) ([#102](https://github.com/ishioni/speedtest-exporter/issues/102)) ([5ff6c94](https://github.com/ishioni/speedtest-exporter/commit/5ff6c94fdd487cc366579f5a7d20b9f9846ee6fd))
+* **mise:** update tool go (1.27.2 → 1.27.3) ([#106](https://github.com/ishioni/speedtest-exporter/issues/106)) ([8b19340](https://github.com/ishioni/speedtest-exporter/commit/8b193407fb8ad1b8d526b49fd9d9937e467a14da))
+* **mise:** update tool golangci-lint (2.13.2 → 2.14.0) ([#78](https://github.com/ishioni/speedtest-exporter/issues/78)) ([8f300c3](https://github.com/ishioni/speedtest-exporter/commit/8f300c308b8e7d76118ed7650931691630dcf164))
+* **mise:** update tool lefthook (2.1.14 → 2.1.15) ([#85](https://github.com/ishioni/speedtest-exporter/issues/85)) ([5ad0f91](https://github.com/ishioni/speedtest-exporter/commit/5ad0f91c3278ebf2aae24df138066183a452e445))
+* **mise:** update tool lefthook (2.1.15 → 2.1.16) ([#86](https://github.com/ishioni/speedtest-exporter/issues/86)) ([f44a458](https://github.com/ishioni/speedtest-exporter/commit/f44a45895cc095acdf1a10f67363743761389f82))
+* **mise:** update tool lefthook (2.1.16 → 2.1.17) ([#88](https://github.com/ishioni/speedtest-exporter/issues/88)) ([bd06b8f](https://github.com/ishioni/speedtest-exporter/commit/bd06b8f5e4aa6fcf22a4e99a46d806e6781b8075))
+* **mise:** update tool lefthook (2.1.17 → 2.2.1) ([#91](https://github.com/ishioni/speedtest-exporter/issues/91)) ([8c660e4](https://github.com/ishioni/speedtest-exporter/commit/8c660e4c13e02c5dbf2b53def714cd9d3a457a33))
+* **mise:** update tool node (24.20.0 → v24.21.0) ([#66](https://github.com/ishioni/speedtest-exporter/issues/66)) ([e7859fb](https://github.com/ishioni/speedtest-exporter/commit/e7859fb87c636c85d672ee0b9ec13f867f4da299))
+* **mise:** update tool node (24.21.0 → v24.22.0) ([#98](https://github.com/ishioni/speedtest-exporter/issues/98)) ([b394eb5](https://github.com/ishioni/speedtest-exporter/commit/b394eb58e08ae4fe9a2f0e3c9c6015d806ee115f))
+* **mise:** update tool node (24.22.0 → v24.22.1) ([#107](https://github.com/ishioni/speedtest-exporter/issues/107)) ([9badd08](https://github.com/ishioni/speedtest-exporter/commit/9badd086090709fac3d08e0c1f90e389c919f56f))
+* **mise:** update tool oxfmt (0.66.0 → 0.67.0) ([#68](https://github.com/ishioni/speedtest-exporter/issues/68)) ([bb12413](https://github.com/ishioni/speedtest-exporter/commit/bb1241351338ddf7fe7e164a123485ad8a04abc0))
+* **mise:** update tool oxfmt (0.67.0 → 0.68.0) ([#74](https://github.com/ishioni/speedtest-exporter/issues/74)) ([c47bb2b](https://github.com/ishioni/speedtest-exporter/commit/c47bb2b7117593f82f885e5c345d2fca201bfa7e))
+* **mise:** update tool oxfmt (0.68.0 → 0.70.0) ([#76](https://github.com/ishioni/speedtest-exporter/issues/76)) ([4d742d8](https://github.com/ishioni/speedtest-exporter/commit/4d742d8c07341e566091aee3f140118a4d663b1f))
+* **mise:** update tool oxfmt (0.70.0 → 0.71.0) ([#82](https://github.com/ishioni/speedtest-exporter/issues/82)) ([a2b487c](https://github.com/ishioni/speedtest-exporter/commit/a2b487c24ec3ff3c3523fc8b246875c57aa18c51))
+* **mise:** update tool oxfmt (0.71.0 → 0.72.0) ([#89](https://github.com/ishioni/speedtest-exporter/issues/89)) ([45acd75](https://github.com/ishioni/speedtest-exporter/commit/45acd755122f21d4479624722f02bdcb734e6812))
+* **mise:** update tool oxfmt (0.72.0 → 0.73.0) ([#99](https://github.com/ishioni/speedtest-exporter/issues/99)) ([6319c2d](https://github.com/ishioni/speedtest-exporter/commit/6319c2df38b856a8aebe836a4ae5bfa08ff7649c))
+* **mise:** update tool oxfmt (0.73.0 → 0.74.0) ([#105](https://github.com/ishioni/speedtest-exporter/issues/105)) ([a89bc11](https://github.com/ishioni/speedtest-exporter/commit/a89bc1161e8e0b1ce5844a78fe296a3111866e14))
+* **mise:** update tool yq (4.53.6 → 4.54.1) ([#83](https://github.com/ishioni/speedtest-exporter/issues/83)) ([b06d41c](https://github.com/ishioni/speedtest-exporter/commit/b06d41ca4b9d6d0033022bef5579877d883062fe))
+* **mise:** update tool zizmor (1.30.0 → 1.30.1) ([#70](https://github.com/ishioni/speedtest-exporter/issues/70)) ([6fda362](https://github.com/ishioni/speedtest-exporter/commit/6fda362187fe61c25afbbb3941309ef18c7b5c85))
+
 ## [0.2.6](https://github.com/ishioni/speedtest-exporter/compare/0.2.5...0.2.6) (2026-09-06)
 
 
