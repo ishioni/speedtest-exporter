@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.8](https://github.com/ishioni/speedtest-exporter/compare/0.2.7...0.2.8) (2026-10-30)
+
+
+### Features
+
+* **container:** update image grafana/grafana (13.2.4 → 13.3.0) ([#113](https://github.com/ishioni/speedtest-exporter/issues/113)) ([76ca4ba](https://github.com/ishioni/speedtest-exporter/commit/76ca4baed5fb66f79e38626014d05fa7ffd199fb))
+
+
+### Miscellaneous Chores
+
+* **github-action:** update action docker/login-action (v4.6.0 → v4.7.0) ([#111](https://github.com/ishioni/speedtest-exporter/issues/111)) ([9bb7105](https://github.com/ishioni/speedtest-exporter/commit/9bb7105f13b134fdbaab81578d92627cded01de8))
+* **github-action:** update action jdx/mise-action (v5.2.2 → v5.2.3) ([#112](https://github.com/ishioni/speedtest-exporter/issues/112)) ([b2d9318](https://github.com/ishioni/speedtest-exporter/commit/b2d9318594c39d7ed74fe9e48a674e9636f92cd9))
+* **github-action:** update action renovatebot/github-action (v46.3.9 → v46.3.10) ([#114](https://github.com/ishioni/speedtest-exporter/issues/114)) ([a987c14](https://github.com/ishioni/speedtest-exporter/commit/a987c143efcb6c7db3625f21c8e960ebcfb5a4ca))
+* **github-action:** update github-actions ([#110](https://github.com/ishioni/speedtest-exporter/issues/110)) ([3bb4ce1](https://github.com/ishioni/speedtest-exporter/commit/3bb4ce14c2cb7bbfc68eea0a43a49be94523ee65))
+* **mise:** update tool cosign (3.1.3 → 3.1.4) ([#108](https://github.com/ishioni/speedtest-exporter/issues/108)) ([304bb27](https://github.com/ishioni/speedtest-exporter/commit/304bb279c7ab4c2a8a53dd955bf80e0367f03b92))
+* **mise:** update tool node (24.22.1 → v24.22.2) ([#115](https://github.com/ishioni/speedtest-exporter/issues/115)) ([cbc4507](https://github.com/ishioni/speedtest-exporter/commit/cbc4507b5e5c05e9f4a8e3ad161cf5255deaafb9))
+* **mise:** update tool oxfmt (0.74.0 → 0.75.0) ([#116](https://github.com/ishioni/speedtest-exporter/issues/116)) ([ec68d5b](https://github.com/ishioni/speedtest-exporter/commit/ec68d5b85fb7926bd780f446c576bb8b6ab4416b))
+
 ## [0.2.7](https://github.com/ishioni/speedtest-exporter/compare/0.2.6...0.2.7) (2026-10-23)
 
 
