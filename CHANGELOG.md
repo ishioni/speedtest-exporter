@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.9](https://github.com/ishioni/speedtest-exporter/compare/0.2.8...0.2.9) (2026-11-28)
+
+
+### Miscellaneous Chores
+
+* **github-action:** update github-actions ([#139](https://github.com/ishioni/speedtest-exporter/issues/139)) ([c07c989](https://github.com/ishioni/speedtest-exporter/commit/c07c9895091f2b7f1088cc294ad5dcb3592ced96))
+* **mise:** update mise tools ([#140](https://github.com/ishioni/speedtest-exporter/issues/140)) ([8f68638](https://github.com/ishioni/speedtest-exporter/commit/8f6863841177b56451f33280f5be3df5878b71e4))
+* **mise:** update tool zizmor (1.32.0 → 1.33.1) ([#137](https://github.com/ishioni/speedtest-exporter/issues/137)) ([459862a](https://github.com/ishioni/speedtest-exporter/commit/459862a20bea2d8ecf898c5be3b5af4e37959ed6))
+
 ## [0.2.8](https://github.com/ishioni/speedtest-exporter/compare/0.2.7...0.2.8) (2026-11-25)
 
 
